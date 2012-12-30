@@ -311,13 +311,13 @@ def http_download(url, port=0, method='GET', params={}, headers={}, timeout=15, 
     c.setopt(pycurl.FOLLOWLOCATION, 1)
     c.setopt(pycurl.MAXREDIRS, 5)
     c.setopt(pycurl.WRITEFUNCTION, buf.write)
-    params = urllib.urlencode(params)
     if method == 'GET' and len(params) > 0:
+        params = urllib.urlencode(params)
         url = url + ('/' if '/' not in url else '') + ('?' if '?' not in url else '&') + params
     elif method == 'POST':
         c.setopt(pycurl.POST, 1)
         if len(params) > 0:
-            c.setopt(pycurl.POSTFIELD, params)
+            c.setopt(pycurl.POSTFIELDS, params) #Someone had forgot an 'S'
             c.setopt(pycurl.POSTFIELDSIZE, len(params))
     url = ensure_utf8(url)
     c.setopt(pycurl.URL, url)
