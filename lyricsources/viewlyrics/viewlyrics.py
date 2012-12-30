@@ -37,21 +37,32 @@ VIEWLYRICS_KEY = 'Mlv1clt4.0'
 class ViewlyricsSource(BaseLyricSourcePlugin):
     def __init__(self):
         
-        BaseLyricSourcePlugin.__init__(self, id='viewlyrics', name='viewlyrics')
+        BaseLyricSourcePlugin.__init__(self, id='viewlyrics', name='ViewLyrics')
 
     def do_search(self, metadata):
-        keys = []
-        query = VIEWLYRICS_QUERY_FORM
         if metadata.title:
-            query =  query.replace('%title', metadata.title)
+            title =  metadata.title
         else:
-            query =  query.replace('%title', '')
+            title =  ''
         if metadata.artist:
-            query =  query.replace('%artist', metadata.artist)
+            artist = metadata.artist
         else:
-            query =  query.replace('%artist', '')
+            artist = ''
         
-        query =  ensure_utf8(query.replace('%etc', ' client=\"MiniLyrics\" RequestPage=\'0\'')) #Needs real RequestPage
+        result = []
+        page = 0
+        pagesleft = 1
+        while(pagesleft > 0):
+            pageresult, pagesleft = self.real_search(title, artist, page)
+            result += pageresult
+            page += 1
+        return result
+
+    def real_search(self, title='', artist='', page = 0):
+        query = VIEWLYRICS_QUERY_FORM
+        query =  query.replace('%title', title)
+        query =  query.replace('%artist', artist)
+        query =  ensure_utf8(query.replace('%etc', ' client=\"MiniLyrics\" RequestPage=\'%d\'' % page)) #Needs real RequestPage
         
         queryhash = hashlib.md5()
         queryhash.update(query)
@@ -62,10 +73,8 @@ class ViewlyricsSource(BaseLyricSourcePlugin):
         url = VIEWLYRICS_HOST + VIEWLYRICS_SEARCH_URL
         status, content = http_download(url=url,
                                         method='POST',
-                                        params=masterquery
-                                        #,headers={'User-Agent': VIEWLYRICS_AGENT}
-                                        #,proxy=get_proxy_settings(self.config_proxy))
-                                        )
+                                        params=masterquery,
+                                        proxy=get_proxy_settings(self.config_proxy))
         
         if status < 200 or status >= 400:
                 raise httplib.HTTPException(status, '')
@@ -77,8 +86,14 @@ class ViewlyricsSource(BaseLyricSourcePlugin):
                 deccontent += unichr(char ^ codekey)
         
         result = []
+        pagesleft = 0
         tagreturn = parseString(deccontent).getElementsByTagName('return')[0]
         if tagreturn:
+                pagesleftstr = self.alternative_gettagattribute(tagreturn.attributes.items(), 'PageCount') #tagreturn.attributes['PageCount'].value
+                if pagesleftstr == '':
+                    pagesleft = 0
+                else:
+                    pagesleft = int(pagesleftstr)
                 tagsfileinfo = tagreturn.getElementsByTagName('fileinfo')
                 if tagsfileinfo:
                     for onefileinfo in tagsfileinfo:
@@ -93,7 +108,14 @@ class ViewlyricsSource(BaseLyricSourcePlugin):
                                                 album=album,
                                                 sourceid=self.id,
                                                 downloadinfo=url))
-        return result
+        return result, (pagesleft - page)
+
+    def alternative_gettagattribute(self, attrs, key):
+        key = key.lower()
+        for attrName, attrValue in attrs:
+            if attrName.lower() == key:
+                return attrValue
+        return ''
 
     def do_download(self, downloadinfo):
         # return a string
