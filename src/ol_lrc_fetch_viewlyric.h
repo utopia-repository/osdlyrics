@@ -17,6 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
  */
+ 
+/*
+ * This file was added by abie
+ */
 #ifndef _OL_LRC_FETCH_VIEWLYRIC_H_
 #define _OL_LRC_FETCH_VIEWLYRIC_H_
 

@@ -17,6 +17,10 @@
  * You should have received a copy of the GNU General Public License
  * along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
  */
+
+/*
+ * This file was added by abie
+ */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -84,20 +88,24 @@ _parse_candidate (GMarkupParseContext *context,
       else
         ol_debugf ("Unknown attribute: %s=%s\n", *attr, *value);
     }
+    
     if (url != NULL && (title != NULL || artist != NULL))
     {
-      OlLrcCandidate *candidate = ol_lrc_candidate_new ();
-      ol_lrc_candidate_set_url (candidate, url);
-      if (title != NULL)
-        ol_lrc_candidate_set_title (candidate, title);
-      if (artist != NULL)
-        ol_lrc_candidate_set_artist (candidate, artist);
-      data->count = ol_lrc_fetch_add_candidate (data->info,
-                                                data->candidate_list,
-                                                data->count,
-                                                MAX_CANDIDATE,
-                                                candidate);
-      ol_lrc_candidate_free (candidate);
+      int url_len = strlen(url);
+      if (strncasecmp(&url[url_len - 4], ".lrc", 4) == 0) {
+          OlLrcCandidate *candidate = ol_lrc_candidate_new ();
+          ol_lrc_candidate_set_url (candidate, url);
+          if (title != NULL)
+            ol_lrc_candidate_set_title (candidate, title);
+          if (artist != NULL)
+            ol_lrc_candidate_set_artist (candidate, artist);
+          data->count = ol_lrc_fetch_add_candidate (data->info,
+                                                    data->candidate_list,
+                                                    data->count,
+                                                    MAX_CANDIDATE,
+                                                    candidate);
+          ol_lrc_candidate_free (candidate);
+      }
     }
   }
 }
@@ -216,13 +224,12 @@ static OlLrcCandidate *_search(const OlMusicInfo *info, int *size, const char* c
   
   char *post_data = buffer;
   int post_len = len + 22;
-  //printf ("##----------------\n xml: %s\nencrypted len %d:\n", buffer, post_len);
+
   struct memo content = {.mem_base = NULL, .mem_len = 0};
   
-  //_encrypt_request(buffer, &post_data, &post_len);
   if (fetch_into_memory (SEARCH_URL, NULL, USER_AGENT, post_data, post_len, &content) != 0)
   {
-    printf("------- GAGAL DOWNLOAD ----------\n");
+    //printf("------- GAGAL DOWNLOAD ----------\n");
     ol_debugf ("Search lyrics failed\n");
     if (content.mem_base != NULL)
       free (content.mem_base);
@@ -230,8 +237,13 @@ static OlLrcCandidate *_search(const OlMusicInfo *info, int *size, const char* c
   }
   else
   {
-    //g_free(post_data);
-    //printf("------- recv %d \n", content.mem_len);
+    char *real_result;
+    int res_len;
+    
+    _decrypt_response((const char*)content.mem_base, content.mem_len, &real_result, &res_len);
+    free (content.mem_base);
+    char *xml_data = strstr(real_result, "<return");
+    //printf(">> result [%d] \n%s\n", content.mem_len, xml_data);
     
     GMarkupParser parser = {.start_element = _parse_candidate};
     GError *error = NULL;
@@ -246,16 +258,10 @@ static OlLrcCandidate *_search(const OlMusicInfo *info, int *size, const char* c
                                                                NULL);
     //ol_debugf ("Search result: %s\n", content.mem_base);
     
-    char *xml_data;
-    int xml_len;
-    
-    _decrypt_response((const char*)content.mem_base, content.mem_len, &xml_data, &xml_len);
-    free (content.mem_base);
-    //printf("----------- hasil %d \n%s\n", content.mem_len, xml_data);
     
     if (!g_markup_parse_context_parse (context,
                                        xml_data,
-                                       xml_len,
+                                       strlen(xml_data),
                                        &error))
     {
       ol_errorf ("failed to parse: %s\n", error->message);
@@ -269,7 +275,7 @@ static OlLrcCandidate *_search(const OlMusicInfo *info, int *size, const char* c
     g_markup_parse_context_free (context);
     retval = candidate_list;
     *size = data.count;
-    g_free(xml_data);
+    g_free(real_result);
   }
   
   return retval;
