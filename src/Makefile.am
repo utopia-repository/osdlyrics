@@ -60,6 +60,7 @@ noinst_HEADERS = \
 	ol_lrc_fetch_module.h \
 	ol_lrc_fetch_xiami.h \
 	ol_lrc_fetch_ttplayer.h \
+	ol_lrc_fetch_viewlyric.h \
 	ol_lrc_fetch_ui.h \
 	ol_lrc_fetch_utils.h \
 	ol_lrc.h \
@@ -164,6 +165,7 @@ osdlyrics_SOURCES = \
 	ol_lrc_fetch_ui.c \
 	ol_lrc_fetch_xiami.c \
 	ol_lrc_fetch_ttplayer.c \
+	ol_lrc_fetch_viewlyric.c \
 	ol_lrc_fetch_utils.c \
 	ol_lrc_candidate_list.c \
 	ol_lrc_engine_list.c \
