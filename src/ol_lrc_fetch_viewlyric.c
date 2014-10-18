@@ -71,7 +71,7 @@ _parse_candidate (GMarkupParseContext *context,
   {
     const char **attr;
     const char **value;
-    const char *url = NULL;
+    const char url[512] = "http://www.viewlyrics.com/";
     const char *title = NULL;
     const char *artist = NULL;
     struct CandidateParserData *data = (struct CandidateParserData*) user_data;
@@ -80,7 +80,7 @@ _parse_candidate (GMarkupParseContext *context,
          attr++, value++)
     {
       if (strcmp (*attr, "link") == 0)
-        url = *value;
+        strcat (url, *value);
       else if (strcmp (*attr, "title") == 0)
         title = *value;
       else if (strcmp (*attr, "artist") == 0)
