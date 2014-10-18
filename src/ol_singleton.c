@@ -20,6 +20,7 @@
 #include <glib.h>
 #include <string.h>
 #include <unistd.h>
+#include <inttypes.h> 
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/stat.h>
