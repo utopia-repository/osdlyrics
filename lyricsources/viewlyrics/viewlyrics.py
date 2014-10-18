@@ -30,7 +30,7 @@ from osdlyrics.utils import ensure_utf8, http_download, get_proxy_settings
 VIEWLYRICS_HOST = 'search.crintsoft.com'
 VIEWLYRICS_SEARCH_URL = '/searchlyrics.htm'
 
-VIEWLYRICS_QUERY_FORM = '<?xml version=\'1.0\' encoding=\'utf-8\' standalone=\'yes\' ?><search filetype=\"lyrics\" artist=\"%artist\" title=\"%title\"%etc />'
+VIEWLYRICS_QUERY_FORM = '<?xml version=\'1.0\' encoding=\'utf-8\' ?><searchV1 artist=\"%artist\" title=\"%title\"%etc />'
 VIEWLYRICS_AGENT = 'MiniLyrics'
 VIEWLYRICS_KEY = 'Mlv1clt4.0'
 
