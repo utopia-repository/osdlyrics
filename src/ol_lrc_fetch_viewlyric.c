@@ -291,7 +291,6 @@ _download(OlLrcCandidate *candidate,
   ol_assert_ret (pathname != NULL, -1);
   FILE *fp;
   int ret = 0;
-	printf("\n\nThat old things: %s ::: %s :: %s\n\n", candidate, pathname, ol_lrc_candidate_get_url (candidate));
 
   if ((fp = fopen(pathname, "w")) == NULL)
   {
@@ -301,7 +300,6 @@ _download(OlLrcCandidate *candidate,
   {
     const char fullurl[512] = "http://www.viewlyrics.com/";
     strcpy (&fullurl[26], ol_lrc_candidate_get_url (candidate));
-	  printf("\n\nThat new thing: %s\n\n", fullurl);
     fetch_into_file (fullurl,
                      NULL,
                      fp);
