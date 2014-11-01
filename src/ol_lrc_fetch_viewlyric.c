@@ -71,7 +71,7 @@ _parse_candidate (GMarkupParseContext *context,
   {
     const char **attr;
     const char **value;
-    const char url[512] = "http://www.viewlyrics.com/";
+    const char *url = NULL;
     const char *title = NULL;
     const char *artist = NULL;
     struct CandidateParserData *data = (struct CandidateParserData*) user_data;
@@ -80,7 +80,7 @@ _parse_candidate (GMarkupParseContext *context,
          attr++, value++)
     {
       if (strcmp (*attr, "link") == 0)
-        strcat (url, *value);
+        url = *value;
       else if (strcmp (*attr, "title") == 0)
         title = *value;
       else if (strcmp (*attr, "artist") == 0)
@@ -291,6 +291,7 @@ _download(OlLrcCandidate *candidate,
   ol_assert_ret (pathname != NULL, -1);
   FILE *fp;
   int ret = 0;
+	printf("\n\nThat old things: %s ::: %s :: %s\n\n", candidate, pathname, ol_lrc_candidate_get_url (candidate));
 
   if ((fp = fopen(pathname, "w")) == NULL)
   {
@@ -298,7 +299,10 @@ _download(OlLrcCandidate *candidate,
   }
   else
   {
-    fetch_into_file (ol_lrc_candidate_get_url (candidate),
+    const char fullurl[512] = "http://www.viewlyrics.com/";
+    strcpy (&fullurl[26], ol_lrc_candidate_get_url (candidate));
+	  printf("\n\nThat new thing: %s\n\n", fullurl);
+    fetch_into_file (fullurl,
                      NULL,
                      fp);
     fclose(fp);
