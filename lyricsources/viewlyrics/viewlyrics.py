@@ -19,6 +19,8 @@
 #/
 
 import re
+import string
+import unicodedata
 import httplib
 import urllib
 import urlparse
@@ -34,6 +36,16 @@ VIEWLYRICS_BASE_LRC_URL = 'http://viewlyrics.com/'
 VIEWLYRICS_QUERY_FORM = '<?xml version=\'1.0\' encoding=\'utf-8\' ?><searchV1 artist=\"%artist\" title=\"%title\"%etc />'
 VIEWLYRICS_AGENT = 'MiniLyrics'
 VIEWLYRICS_KEY = 'Mlv1clt4.0'
+
+def normalize_str(s):
+    """ If s is a unicode string, only keep alphanumeric characters and remove
+        diacritics
+    """
+    try:
+        return ''.join(x for x in unicodedata.normalize('NFKD', s)
+                       if x in string.ascii_letters or x in string.digits).lower()
+    except TypeError:
+        return s
 
 class ViewlyricsSource(BaseLyricSourcePlugin):
     def __init__(self):
@@ -57,6 +69,21 @@ class ViewlyricsSource(BaseLyricSourcePlugin):
             pageresult, pagesleft = self.real_search(title, artist, page)
             result += pageresult
             page += 1
+
+        # Prioritize results in lrc format (over txt which doesn't work anyway),
+        # i.e. put them first in the list (False < True)
+        def res_has_lrc(result):
+            url = result._downloadinfo
+            return url.rfind('lrc') == len(url) - 3
+        result.sort(key=res_has_lrc, reverse=True)
+
+        # Prioritize results whose artist matches
+        if metadata.artist and metadata.title:
+            n_artist = normalize_str(artist)
+            def res_has_same_artist(result):
+                return normalize_str(result._artist) == n_artist
+            result.sort(key=res_has_same_artist, reverse=True)
+
         return result
 
     def real_search(self, title='', artist='', page = 0):
