@@ -29,6 +29,7 @@ from osdlyrics.utils import ensure_utf8, http_download, get_proxy_settings
 
 VIEWLYRICS_HOST = 'search.crintsoft.com'
 VIEWLYRICS_SEARCH_URL = '/searchlyrics.htm'
+VIEWLYRICS_BASE_LRC_URL = 'http://viewlyrics.com/'
 
 VIEWLYRICS_QUERY_FORM = '<?xml version=\'1.0\' encoding=\'utf-8\' ?><searchV1 artist=\"%artist\" title=\"%title\"%etc />'
 VIEWLYRICS_AGENT = 'MiniLyrics'
@@ -97,17 +98,16 @@ class ViewlyricsSource(BaseLyricSourcePlugin):
                 tagsfileinfo = tagreturn.getElementsByTagName('fileinfo')
                 if tagsfileinfo:
                     for onefileinfo in tagsfileinfo:
-                        #
-                                title = onefileinfo.attributes['title'].value
-                                artist = onefileinfo.attributes['artist'].value
-                                album = onefileinfo.attributes['title'].value
-                                url = onefileinfo.attributes['link'].value
-                                if url is not None:
-                                        result.append(SearchResult(title=title,
-                                                artist=artist,
-                                                album=album,
-                                                sourceid=self.id,
-                                                downloadinfo=url))
+                        if onefileinfo.hasAttribute('link'):
+                            title = onefileinfo.getAttribute('title')
+                            artist = onefileinfo.getAttribute('artist')
+                            album = onefileinfo.getAttribute('album')
+                            url = VIEWLYRICS_BASE_LRC_URL + onefileinfo.getAttribute('link')
+                            result.append(SearchResult(title=title,
+                                                       artist=artist,
+                                                       album=album,
+                                                       sourceid=self.id,
+                                                       downloadinfo=url))
         return result, (pagesleft - page)
 
     def alternative_gettagattribute(self, attrs, key):
