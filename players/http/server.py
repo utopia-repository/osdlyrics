@@ -99,7 +99,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                       'caps': PARAM_CAPS,
                       })
     def do_connect(self, params):
-        print 'caps: %s' % params['caps']
+        logging.debug('caps: %s', params['caps'])
         return json.dumps({'id': self.server.player_proxy.add_player(params['name'],
                                                                      params['caps']),
                            })
@@ -152,7 +152,6 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         try:
             return self.server.player_proxy.get_player(name)
         except Exception, e:
-            print e
             raise BadRequestError('Invalid player id: %s' % name)
         
 

@@ -40,13 +40,11 @@ from osdlyrics.utils import cmd_exists
 
 if not hasattr(mpd.MPDClient(), 'send_idle'):
     logging.error('Require python-mpd >= 0.3')
-    exit
+    exit(1)
 
 PLAYER_NAME = 'Mpd'
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 6600
-
-logging.root.setLevel(logging.DEBUG)
 
 class NoConnectionError(Exception):
     pass
@@ -322,7 +320,7 @@ class MpdPlayer(BasePlayer):
             self.proxy.send_command(cmd, handler, *args)
 
     def _handle_status(self, status):
-        print 'status\n%s' % status
+        logging.debug('status\n%s', status)
         changes = set()
         for prop, handler in self.STATUS_CHANGE_MAP.items():
             if not prop in status:
@@ -397,8 +395,8 @@ class MpdPlayer(BasePlayer):
             if change in self.CHANGE_CMDS:
                 for cmd in self.CHANGE_CMDS[change]:
                     cmds.add(cmd)
-        print 'changes: %s' % changes
-        print 'cmds: %s' % cmds
+        logging.debug('changes: %s', changes)
+        logging.debug('cmds: %s', cmds)
         for cmd in cmds:
             self._send_cmd(cmd)
 

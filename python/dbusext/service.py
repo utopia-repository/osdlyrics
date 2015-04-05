@@ -18,6 +18,7 @@
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
 #/
 
+import logging
 import dbus
 import dbus.exceptions
 import dbus.service
@@ -175,7 +176,7 @@ class Object(ObjectType):
     @dbus.service.signal(dbus_interface=dbus.PROPERTIES_IFACE,
                          signature='sa{sv}as')
     def PropertiesChanged(self, iface_name, changed_props, invalidated_props):
-        print '%s changed: %s invalidated: %s' % (iface_name, changed_props, invalidated_props)
+        logging.debug('%s changed: %s invalidated: %s', iface_name, changed_props, invalidated_props)
         pass
         
     @dbus.service.method(dbus.service.INTROSPECTABLE_IFACE, in_signature='', out_signature='s',
@@ -340,29 +341,29 @@ def test():
     def get_reply_handler(expected_value):
         def handler(value):
             if value != expected_value:
-                print 'Get failed, expect %s but %s got' % (expected_value, value)
+                logging.warning('Get failed, expect %s but %s got', expected_value, value)
             else:
-                print 'Get succesful'
+                logging.debug('Get succesful')
         return handler
 
     def get_all_reply_handler(expected_dict):
         def handler(value):
             for k, v in value.iteritems():
                 if not k in expected_dict:
-                    print 'GetAll: unexpected key %s' % k
+                    logging.warning('GetAll: unexpected key %s', k)
                 elif v != expected_dict[k]:
-                    print 'GetAll: expected value of key %s is %s but %s got' % (k, expected_dict[k], v)
+                    logging.warning('GetAll: expected value of key %s is %s but %s got', k, expected_dict[k], v)
             for k in expected_dict.iterkeys():
                 if not k in value:
-                    print 'GetAll: missing key %s' % k
-            print 'GetAll finished'
+                    logging.warning('GetAll: missing key %s', k)
+            logging.debug('GetAll finished')
         return handler
 
     def set_reply_handler():
-        print 'Set succeed'
+        logging.debug('Set succeed')
 
     def error_handler(e):
-        print 'Error %s' % e
+        logging.error('Error %s', e)
 
     def introspect_reply_handler(xml):
         # print xml
@@ -370,7 +371,7 @@ def test():
 
     def msg_handler(msg):
         def handler(*args, **kwargs):
-            print msg
+            logging.debug(msg)
         return handler
 
     def test_timeout():
