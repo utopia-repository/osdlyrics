@@ -18,6 +18,7 @@
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
 #/
 
+import logging
 import glib
 import server
 import datetime
@@ -42,7 +43,7 @@ class HttpPlayerProxy(BasePlayerProxy):
         self._player_counter = 1
         
     def _handle_req(self, fd, event):
-        print 'new request %s, %s' % (fd, event)
+        logging.debug('new request %s, %s', fd, event)
         self._server.handle_request()
         return True
 
@@ -102,7 +103,7 @@ class HttpPlayer(BasePlayer):
         now = datetime.datetime.now()
         duration = now - self._last_ping
         if duration.total_seconds() * 1000 > CONNECTION_TIMEOUT * 2:
-            print '%s connection timeout' % self.name
+            logging.warning('%s connection timeout', self.name)
             self.disconnect()
 
     def disconnect(self):

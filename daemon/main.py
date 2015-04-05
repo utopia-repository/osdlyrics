@@ -28,7 +28,7 @@ import lyricsource
 from osdlyrics.metadata import Metadata
 from osdlyrics.consts import MPRIS2_OBJECT_PATH
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 
 class InvalidClientNameException(Exception):
     """ The client bus name in Hello is invalid
@@ -64,7 +64,7 @@ class MainApp(osdlyrics.App):
         try:
             self.connection.activate_name_owner(osdlyrics.CONFIG_BUS_NAME)
         except:
-            print "Cannot activate config service"
+            logging.error("Cannot activate config service")
 
     def _player_properties_changed(self, iface, changed, invalidated):
         if 'Metadata' in changed:
