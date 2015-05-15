@@ -70,12 +70,12 @@ class ViewlyricsSource(BaseLyricSourcePlugin):
             result += pageresult
             page += 1
 
-        # Prioritize results in lrc format (over txt which doesn't work anyway),
-        # i.e. put them first in the list (False < True)
-        def res_has_lrc(result):
+        # Remove non-lrc (plain text) results, they cannot be displayed by
+        # OSDLyrics for now
+        def res_is_lrc(result):
             url = result._downloadinfo
             return url.rfind('lrc') == len(url) - 3
-        result.sort(key=res_has_lrc, reverse=True)
+        result = filter(res_is_lrc, result)
 
         # Prioritize results whose artist matches
         if metadata.artist and metadata.title:
