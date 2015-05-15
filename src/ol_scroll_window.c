@@ -484,6 +484,8 @@ _paint_lyrics (OlScrollWindow *scroll, cairo_t *cr)
   /* set the font */
   PangoLayout *layout = _get_pango (scroll, cr);
   pango_layout_set_alignment (layout, PANGO_ALIGN_LEFT);
+  pango_layout_set_width (layout, (width - priv->padding_x*2) * PANGO_SCALE);
+  pango_layout_set_indent (layout, -20 * PANGO_SCALE);
   /* paint the lyrics*/
   cairo_save (cr);
   cairo_new_path (cr);
@@ -535,6 +537,13 @@ _paint_lyrics (OlScrollWindow *scroll, cairo_t *cr)
       pango_cairo_update_layout (cr, layout);
       pango_cairo_show_layout (cr, layout);
       cairo_restore (cr);
+
+      if (pango_layout_is_wrapped (layout)) {
+        // There is more than one line, offset ypos according to the number of
+        // additional lines
+        ypos += (pango_layout_get_line_count (layout) - 1)
+                * ol_scroll_window_get_font_height (scroll);
+      }
     }
   }
   g_object_unref (layout);
