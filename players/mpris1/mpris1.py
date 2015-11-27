@@ -18,6 +18,7 @@
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
 #/
 
+import logging
 import dbus
 import osdlyrics
 
@@ -94,7 +95,7 @@ class Mpris1Player(BasePlayer):
             self._name_watch = self.connection.watch_name_owner(mpris1_service_name,
                                                                 self._name_lost)
         except Exception, e:
-            print 'Fail to connect to mpris1 player %s: %s' % (player_name, e)
+            logging.error('Fail to connect to mpris1 player %s: %s', player_name, e)
             self.disconnect()
 
     def _name_lost(self, name):
@@ -154,7 +155,7 @@ class Mpris1Player(BasePlayer):
 
     def get_metadata(self):
         mt = self._player.GetMetadata()
-        print mt
+        logging.debug(repr(mt))
         return Metadata.from_dict(mt)
 
     def get_caps(self):
