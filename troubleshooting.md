@@ -6,7 +6,7 @@ an Ubuntu 14.04 LTS base system. However it may work for those who have the same
 When run the `autogen.sh` script or run command like `autoconf` or `autoreconf -i`:
 
 - if have error with output containing this line : `but option 'subdir-objects' is disabled`, 
-  then try to replace the line `AM_INIT_AUTOMAKE([-Wall -Werror])` by `AM_INIT_AUTOMAKE([subdir-objects])` in the *configure.ac* files.
+  then try to replace the line `AM_INIT_AUTOMAKE([-Wall -Werror])` by `AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror])` in the *configure.ac* files.
   The good practice is to comment the first one and add the other.
 
 - if have error with output containing these lines: `syntax error near unexpected token '0.35.0'` and `IT_PROG_INTLTOOL(0.35.0)`,
