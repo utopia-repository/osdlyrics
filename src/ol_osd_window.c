@@ -1026,7 +1026,7 @@ ol_osd_window_paint_lyrics (OlOsdWindow *osd, cairo_t *cr)
   if (!gdk_window_is_visible (widget->window))
     return;
   OlOsdWindowPrivate *priv = OL_OSD_WINDOW_GET_PRIVATE (osd);
-  double alpha = 1.0;
+  double alpha = 0.99;
   int font_height = ol_osd_render_get_font_height (osd->render_context);
   if (priv->composited && priv->locked && priv->mouse_over_lyrics &&
       osd->translucent_on_mouse_over)
