@@ -114,8 +114,9 @@ class MpdProxy(BasePlayerProxy):
             self._client = mpd.MPDClient()
         try:
             self._client.connect(self._host, self._port)
-        except IOError as (errno, strerror):
-            logging.info("Could not connect to '%s': %s", self._host, strerror)
+        except IOError as e:
+            logging.info("Could not connect to '%s': %s", self._host,
+                         e.strerror)
             return False
         except MPDError as e:
             logging.info("Could not connect to '%s': %s", self._host, e)
@@ -161,7 +162,7 @@ class MpdProxy(BasePlayerProxy):
                 logging.debug('client pending: %s', self._client._pending)
                 retval = getattr(self._client, 'fetch_' + cmd_item.command)()
                 cmd_item.call(retval)
-            except Exception, e:
+            except Exception as e:
                logging.exception(e)
                self._on_disconnect()
             return True

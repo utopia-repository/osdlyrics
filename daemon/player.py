@@ -86,7 +86,7 @@ class PlayerSupport(dbus.service.Object):
         if activate:
             try:
                 self.connection.activate_name_owner(bus_name)
-            except Exception, e:
+            except Exception as e:
                 logging.warning('Cannot activate proxy %s: %s' % (bus_name, e))
         self.connection.watch_name_owner(bus_name,
                                          lambda name: self._proxy_name_changed(proxy_name, len(name) == 0))
@@ -118,7 +118,7 @@ class PlayerSupport(dbus.service.Object):
             self._mpris2_player.connect_player(player)
             self.PlayerConnected(player_info)
             return True
-        except Exception, e:
+        except Exception as e:
             return False
 
     def _player_lost_cb(self, player_name):

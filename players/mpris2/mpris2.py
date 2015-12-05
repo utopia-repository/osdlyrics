@@ -177,7 +177,7 @@ class Mpris2Player(BasePlayer):
                          'Stopped': STATUS_STOPPED}
         try:
             return playback_dict[self._player_prop.Get(MPRIS2_IFACE, 'PlaybackStatus')]
-        except Exception, e:
+        except Exception as e:
             logging.error('Failed to get status: %s' % e)
             return STATUS_PLAYING
 

@@ -94,7 +94,7 @@ class Mpris1Player(BasePlayer):
                                                                 self._caps_change_cb))
             self._name_watch = self.connection.watch_name_owner(mpris1_service_name,
                                                                 self._name_lost)
-        except Exception, e:
+        except Exception as e:
             logging.error('Fail to connect to mpris1 player %s: %s', player_name, e)
             self.disconnect()
 

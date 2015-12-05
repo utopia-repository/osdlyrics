@@ -85,7 +85,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             try:
                 content = getattr(self, 'do_' + cmd)(params)
                 self._send_content(content)
-            except HttpError, e:
+            except HttpError as e:
                 self._send_error(e)
         else:
             self._send_error(NotFoundError('Invalid request: %s' % cmd))
@@ -151,7 +151,7 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def get_player(self, name):
         try:
             return self.server.player_proxy.get_player(name)
-        except Exception, e:
+        except Exception as e:
             raise BadRequestError('Invalid player id: %s' % name)
         
 

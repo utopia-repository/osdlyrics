@@ -51,7 +51,7 @@ class Config(object):
     def get_bool(self, key, default=None):
         try:
             return self._proxy.GetBool(key)
-        except Exception, e:
+        except Exception as e:
             if default is not None:
                 try:
                     self._proxy.SetBool(key, default)
@@ -66,7 +66,7 @@ class Config(object):
     def get_int(self, key, default=None):
         try:
             return self._proxy.GetInt(key)
-        except Exception, e:
+        except Exception as e:
             if default is not None:
                 try:
                     self._proxy.SetInt(key, default)
@@ -81,7 +81,7 @@ class Config(object):
     def get_double(self, key, default=None):
         try:
             return self._proxy.GetDouble(key)
-        except Exception, e:
+        except Exception as e:
             if default is not None:
                 try:
                     self._proxy.SetBool(key, default)
@@ -96,7 +96,7 @@ class Config(object):
     def get_string(self, key, default=None):
         try:
             return self._proxy.GetString(key)
-        except Exception, e:
+        except Exception as e:
             if default is not None:
                 try:
                     self._proxy.SetString(key, default)
@@ -111,7 +111,7 @@ class Config(object):
     def get_string_list(self, key, default=None):
         try:
             return self._proxy.GetStringList(key)
-        except Exception, e:
+        except Exception as e:
             if default is not None:
                 try:
                     self._proxy.SetStringList(key, default)

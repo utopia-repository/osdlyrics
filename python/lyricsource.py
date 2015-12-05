@@ -129,7 +129,7 @@ class BaseTaskThread(threading.Thread):
         try:
             ret = self._target(*self._args, **self._kwargs)
             self._onfinish(ret)
-        except Exception,e:
+        except Exception as e:
             logging.exception('Got exception in thread')
             self._onerror(e)
         import sys

@@ -65,12 +65,12 @@ class LyricSource(dbus.service.Object):
         for bus_name in self.connection.list_names():
             try:
                 self._connect_source(bus_name, False)
-            except Exception, e:
+            except Exception as e:
                 logging.warning('Fail to connect source %s: %s' % (bus_name, e))
         for bus_name in self.connection.list_activatable_names():
             try:
                 self._connect_source(bus_name, True)
-            except Exception, e:
+            except Exception as e:
                 logging.warning('Fail to connect source %s: %s' % (bus_name, e))
 
     def _connect_source(self, bus_name, activate):
@@ -83,7 +83,7 @@ class LyricSource(dbus.service.Object):
         if activate:
             try:
                 self.connection.activate_name_owner(bus_name)
-            except Exception, e:
+            except Exception as e:
                 logging.warning('Cannot activate lyric source %s: %s' % (bus_name, e))
                 return
         path = osdlyrics.LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX + source_id

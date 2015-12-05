@@ -182,7 +182,7 @@ def load_from_file(urlparts):
         path = urlparts.path
     try:
         lrcfile = open(path)
-    except IOError, e:
+    except IOError as e:
         logging.info("Cannot open file %s to read: %s" % (path, e))
         return None
     content = lrcfile.read()
@@ -225,12 +225,12 @@ def save_to_file(urlparts, content, create):
         if not os.path.isdir(dirname):
             try:
                 os.makedirs(os.path.dirname(path), 0755)
-            except OSError, e:
+            except OSError as e:
                 logging.warning("Cannot create directories for %s: %s", path, e)
                 return False
     try:
         file = open(path, 'w')
-    except IOError, e:
+    except IOError as e:
         logging.info("Cannot open file %s to write: %s", path, e)
         return False
     file.write(osdlyrics.utils.ensure_utf8(content))
@@ -416,7 +416,7 @@ class LyricsService(dbus.service.Object):
                     uri = osdlyrics.utils.path2uri(fullpath)
                     if save_to_uri(uri, content):
                         return uri
-                except osdlyrics.pattern.PatternException, e:
+                except osdlyrics.pattern.PatternException as e:
                     pass
         return ''
 
@@ -436,7 +436,7 @@ class LyricsService(dbus.service.Object):
                     fullpath = os.path.join(path, filename + '.lrc')
                     if os.path.isfile(fullpath):
                         return fullpath
-                except osdlyrics.pattern.PatternException, e:
+                except osdlyrics.pattern.PatternException as e:
                     pass
         return None
 
