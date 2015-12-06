@@ -22,19 +22,23 @@
 """
 
 import __builtin__
+import logging
+import os
+import select
+
 import dbus
 import dbus.service
 import glib
 import gobject
-import logging
 import mpd
-import os
+
 import osdlyrics
 import osdlyrics.consts
-import select
-
 from osdlyrics.metadata import Metadata
-from osdlyrics.player_proxy import *
+from osdlyrics.player_proxy import (
+    BasePlayer, BasePlayerProxy, PlayerInfo, CAPS_NEXT, CAPS_PAUSE, CAPS_PLAY,
+    CAPS_PREV, CAPS_SEEK, REPEAT_ALL, REPEAT_NONE, REPEAT_TRACK, STATUS_PAUSED,
+    STATUS_PLAYING, STATUS_STOPPED)
 from osdlyrics.timer import Timer
 from osdlyrics.utils import cmd_exists
 

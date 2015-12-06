@@ -21,11 +21,14 @@
 import dbus
 import dbus.service
 import dbus.types
+
 import osdlyrics
 import osdlyrics.dbusext
-
-from osdlyrics.player_proxy import *
 from osdlyrics.metadata import Metadata
+from osdlyrics.player_proxy import (
+    BasePlayer, BasePlayerProxy, PlayerInfo, CAPS_NEXT, CAPS_PAUSE, CAPS_PLAY,
+    CAPS_PREV, CAPS_SEEK, REPEAT_ALL, REPEAT_NONE, REPEAT_TRACK, STATUS_PAUSED,
+    STATUS_PLAYING, STATUS_STOPPED)
 
 PROXY_NAME = 'Mpris2'
 BUS_NAME = osdlyrics.PLAYER_PROXY_BUS_NAME_PREFIX + PROXY_NAME

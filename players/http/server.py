@@ -21,18 +21,14 @@
 import BaseHTTPServer
 import json
 import urlparse
-from validator import validate_params, param_str, param_enum, param_set, param_int
-from error import *
-from osdlyrics.player_proxy import \
-    STATUS_PLAYING, \
-    STATUS_PAUSED, \
-    STATUS_STOPPED, \
-    CAPS_NEXT, \
-    CAPS_PREV, \
-    CAPS_PAUSE, \
-    CAPS_PLAY, \
-    CAPS_SEEK
+
 from osdlyrics.metadata import Metadata
+from osdlyrics.player_proxy import (CAPS_NEXT, CAPS_PAUSE, CAPS_PLAY,
+    CAPS_PREV, CAPS_SEEK, STATUS_PAUSED, STATUS_PLAYING, STATUS_STOPPED)
+
+from error import BadRequestError, HttpError, NotFoundError
+from validator import (param_enum, param_int, param_set, param_str,
+                       validate_params)
 
 PARAM_STATUS = param_enum({'playing': STATUS_PLAYING,
                            'paused': STATUS_PAUSED,
