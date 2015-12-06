@@ -375,7 +375,6 @@ def test():
         return handler
 
     def test_timeout():
-        import time
         proxy = conn.get_object(BUS_NAME, PATH)
         proxy.GetAll('',
                      reply_handler=get_all_reply_handler({'foo': DEFAULT_VALUE, 'baz': 'baz'}),

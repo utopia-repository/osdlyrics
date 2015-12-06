@@ -3,7 +3,7 @@
 # Copyright (C) 2011  Tiger Soldier
 #
 # This file is part of OSD Lyrics.
-# 
+#
 # OSD Lyrics is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -15,8 +15,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
-#/
+# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
+#
 
 import dbus
 import dbus.service
@@ -24,7 +24,6 @@ import dbus.types
 import osdlyrics
 import osdlyrics.dbusext
 
-from dbus.mainloop.glib import DBusGMainLoop
 from osdlyrics.player_proxy import *
 from osdlyrics.metadata import Metadata
 
