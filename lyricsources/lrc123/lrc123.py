@@ -18,8 +18,12 @@
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import re
 import httplib
+import logging
+import re
+
+import pycurl
+
 from osdlyrics.lyricsource import BaseLyricSourcePlugin, SearchResult
 from osdlyrics.utils import http_download, get_proxy_settings
 
@@ -31,11 +35,11 @@ DOWNLOAD_URL_PREFIX = '/download/lrc/'
 class Lrc123Source(BaseLyricSourcePlugin):
     """ Lyric source from xiami.com
     """
-    
+
     def __init__(self):
         """
         """
-        
+
         BaseLyricSourcePlugin.__init__(self, id='lrc123', name='LRC123')
 
     def do_search(self, metadata):
@@ -47,11 +51,17 @@ class Lrc123Source(BaseLyricSourcePlugin):
         urlkey = (' '.join(keys))
         params = {'keyword': urlkey,
                   'field': 'all'}
-        status, content = http_download(url=HOST + '/',
-                                        params=params,
-                                        proxy=get_proxy_settings(config=self.config_proxy))
+        try:
+            status, content = http_download(
+                url=HOST + '/',
+                params=params,
+                proxy=get_proxy_settings(config=self.config_proxy))
+        except pycurl.error as e:
+            logging.error('Download failed. %s', e.args[1])
+            return []
+
         if status < 200 or status >= 400:
-            raise httplib.HTTPException(status, '')
+            raise httplib.HTTPException(status)
         match = RESULT_PATTERN.findall(content)
         result = []
         if match:
