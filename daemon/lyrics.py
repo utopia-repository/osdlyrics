@@ -16,25 +16,27 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
-#/
+#
 
-import re
 import logging
-import urlparse
-import urllib
 import os
 import os.path
+import re
+import urllib
+import urlparse
+
 import dbus
 import dbus.service
 import chardet
+
 import osdlyrics
 import osdlyrics.config
+from osdlyrics.consts import (LYRICS_INTERFACE, LYRICS_OBJECT_PATH,
+                              METADATA_ALBUM, METADATA_ARTIST, METADATA_TITLE)
 import osdlyrics.lrc
-from osdlyrics.consts import METADATA_URI, METADATA_TITLE, METADATA_ARTIST, \
-    METADATA_ALBUM, METADATA_TRACKNUM
-from osdlyrics.pattern import expand_file, expand_path
-from osdlyrics import LYRICS_OBJECT_PATH, LYRICS_INTERFACE as INTERFACE
 from osdlyrics.metadata import Metadata
+from osdlyrics.pattern import expand_file, expand_path
+
 import lrcdb
 
 DEFAULT_FILE_PATTERNS = [
@@ -140,7 +142,7 @@ def metadata_equal(lhs, rhs):
             return True
     except:
         pass
-    keys = ['title', 'artist', 'album']
+    keys = [METADATA_TITLE, METADATA_ARTIST, METADATA_ALBUM]
     for key in keys:
         if getattr(lhs, key) != getattr(rhs, key):
             return False
@@ -281,7 +283,7 @@ class LyricsService(dbus.service.Object):
     def __init__(self, conn):
         dbus.service.Object.__init__(self,
                                      conn=conn,
-                                     object_path=osdlyrics.LYRICS_OBJECT_PATH)
+                                     object_path=LYRICS_OBJECT_PATH)
         self._db = lrcdb.LrcDb()
         self._config = osdlyrics.config.Config(conn)
         self._metadata = Metadata()
@@ -300,7 +302,7 @@ class LyricsService(dbus.service.Object):
         if metadata_equal(metadata, self._metadata):
             self.CurrentLyricsChanged()
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRICS_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRICS_INTERFACE,
                          in_signature='a{sv}',
                          out_signature='bsa{ss}aa{sv}')
     def GetLyrics(self, metadata):
@@ -311,7 +313,7 @@ class LyricsService(dbus.service.Object):
         else:
             return ret, uri, {}, []
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRICS_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRICS_INTERFACE,
                          in_signature='a{sv}',
                          out_signature='bss')
     def GetRawLyrics(self, metadata):
@@ -339,19 +341,19 @@ class LyricsService(dbus.service.Object):
                          (metadata_description(metadata), uri))
             return True, uri, lrc
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRICS_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRICS_INTERFACE,
                          in_signature='',
                          out_signature='bsa{ss}aa{sv}')
     def GetCurrentLyrics(self):
         return self.GetLyrics(self._metadata)
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRICS_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRICS_INTERFACE,
                          in_signature='',
                          out_signature='bss')
     def GetCurrentRawLyrics(self):
         return self.GetRawLyrics(self._metadata)
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRICS_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRICS_INTERFACE,
                          in_signature='a{sv}ay',
                          out_signature='s',
                          byte_arrays=True)
@@ -367,7 +369,7 @@ class LyricsService(dbus.service.Object):
             self.CurrentLyricsChanged()
         return uri
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRICS_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRICS_INTERFACE,
                          in_signature='a{sv}s',
                          out_signature='')
     def AssignLyricFile(self, metadata, filepath):
@@ -375,12 +377,12 @@ class LyricsService(dbus.service.Object):
             metadata = Metadata.from_dict(metadata)
         self.assign_lrc_uri(metadata, osdlyrics.utils.path2uri(filepath))
 
-    @dbus.service.signal(dbus_interface=osdlyrics.LYRICS_INTERFACE,
+    @dbus.service.signal(dbus_interface=LYRICS_INTERFACE,
                          signature='')
     def CurrentLyricsChanged(self):
         pass
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRICS_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRICS_INTERFACE,
                          in_signature='si',
                          out_signature='')
     def SetOffset(self, uri, offset_ms):
