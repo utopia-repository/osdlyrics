@@ -30,7 +30,10 @@ import dbus
 import dbus.service
 import glib
 import gobject
-import mpd
+try:
+    import mpd
+except ImportError:
+    mpd = None
 
 import osdlyrics
 import osdlyrics.consts
@@ -42,8 +45,8 @@ from osdlyrics.player_proxy import (
 from osdlyrics.timer import Timer
 from osdlyrics.utils import cmd_exists
 
-if not hasattr(mpd.MPDClient(), 'send_idle'):
-    logging.error('Require python-mpd >= 0.3')
+if mpd is None or not hasattr(mpd.MPDClient(), 'send_idle'):
+    logging.error('python-mpd >= 0.3 is required.')
     exit(1)
 
 PLAYER_NAME = 'Mpd'
