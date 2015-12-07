@@ -235,7 +235,6 @@ def split(value, sep=';'):
         elif value[curr] == '\\' and curr < len(value) - 1:
             tag = value[curr + 1]
             if tag == '\\' or tag == sep:
-                has_tag = True
                 item.append(value[start:curr])
                 start = curr + 1
                 curr = start

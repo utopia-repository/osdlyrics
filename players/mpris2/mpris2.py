@@ -128,7 +128,7 @@ class Mpris2Player(BasePlayer):
                      'Shuffle': 'shuffle_changed',
                      'Metadata': 'track_changed',
                      }
-        status_props = ['PlaybackStatus', 'LoopStatus', 'Shuffle']
+        # status_props = ['PlaybackStatus', 'LoopStatus', 'Shuffle']
         logging.debug('Status changed: %s' % changed)
         for caps in caps_props:
             if caps in changed:

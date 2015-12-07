@@ -118,7 +118,7 @@ class PlayerSupport(dbus.service.Object):
             self._mpris2_player.connect_player(player)
             self.PlayerConnected(player_info)
             return True
-        except Exception as e:
+        except Exception:
             return False
 
     def _player_lost_cb(self, player_name):

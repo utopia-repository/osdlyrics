@@ -418,7 +418,7 @@ class LyricsService(dbus.service.Object):
                     uri = osdlyrics.utils.path2uri(fullpath)
                     if save_to_uri(uri, content):
                         return uri
-                except osdlyrics.pattern.PatternException as e:
+                except osdlyrics.pattern.PatternException:
                     pass
         return ''
 
@@ -438,7 +438,7 @@ class LyricsService(dbus.service.Object):
                     fullpath = os.path.join(path, filename + '.lrc')
                     if os.path.isfile(fullpath):
                         return fullpath
-                except osdlyrics.pattern.PatternException as e:
+                except osdlyrics.pattern.PatternException:
                     pass
         return None
 

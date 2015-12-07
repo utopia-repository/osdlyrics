@@ -408,7 +408,7 @@ def is_exec_file(filepath):
     """
     try:
         st = os.stat(filepath)
-    except Exception as e:
+    except Exception:
         return False
     uid = os.getuid()
     gid = os.getgroups()
