@@ -90,12 +90,12 @@ class Property(object):
         if obj is None:
             return self
         if self._fget is None:
-            raise AttributeError, "unreadable attribute"
+            raise AttributeError("unreadable attribute")
         return wrap_dbus_type(self._type_signature, self._fget(obj))
         
     def __set__(self, obj, value):
         if self._fset is None:
-            raise AttributeError, "can't set attribute"
+            raise AttributeError("can't set attribute")
         self._set_value(obj, value, self._fset)
 
     def dbus_set(self, obj, value):
@@ -114,7 +114,7 @@ class Property(object):
         elif self.writeable and callable(self._fset):
             self._set_value(obj, value, self._fset)
         else:
-            raise AccessDeniedError, 'Property %s is not writeable' % self.__name__
+            raise AccessDeniedError('Property %s is not writeable' % self.__name__)
 
     def _set_value(self, obj, value, setter):
         changed = setter(obj, value)
