@@ -122,7 +122,7 @@ class MpdProxy(BasePlayerProxy):
             logging.info("Could not connect to '%s': %s", self._host,
                          e.strerror)
             return False
-        except MPDError as e:
+        except mpd.MPDError as e:
             logging.info("Could not connect to '%s': %s", self._host, e)
             return False
         self._io_watch = gobject.io_add_watch(self._client,
