@@ -18,6 +18,8 @@
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+import logging
+
 import dbus
 import dbus.service
 import dbus.types

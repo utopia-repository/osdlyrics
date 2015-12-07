@@ -20,6 +20,7 @@
 
 import BaseHTTPServer
 import json
+import logging
 import urlparse
 
 from osdlyrics.metadata import Metadata
