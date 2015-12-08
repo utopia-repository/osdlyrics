@@ -16,13 +16,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
-#/
+#
+
 import os
 import os.path
 import stat
 import urllib
 import pycurl
-import config
 import StringIO
 import sys
 import urlparse
@@ -408,7 +408,7 @@ def is_exec_file(filepath):
     """
     try:
         st = os.stat(filepath)
-    except Exception, e:
+    except Exception:
         return False
     uid = os.getuid()
     gid = os.getgroups()

@@ -3,7 +3,7 @@
 # Copyright (C) 2011  Tiger Soldier
 #
 # This file is part of OSD Lyrics.
-# 
+#
 # OSD Lyrics is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -15,17 +15,21 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
-#/
+# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
+#
 
-import logging
-import glib
-import server
 import datetime
+import logging
 import time
-import osdlyrics.timer
-from osdlyrics.player_proxy import *
+
+import glib
+
 from osdlyrics.metadata import Metadata
+from osdlyrics.player_proxy import (BasePlayer, BasePlayerProxy, PlayerInfo,
+                                    STATUS_PAUSED, STATUS_STOPPED)
+import osdlyrics.timer
+
+import server
 
 CONNECTION_TIMEOUT = 1000
 

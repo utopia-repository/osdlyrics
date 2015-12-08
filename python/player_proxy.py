@@ -16,21 +16,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
-#/
+#
+
 import logging
+
 import dbus
 import dbus.service
-import app
-import dbusext
-import utils
-import timer
-import errors
 
-from consts import \
-    PLAYER_PROXY_OBJECT_PATH_PREFIX, \
-    PLAYER_PROXY_INTERFACE, \
-    MPRIS1_INTERFACE, \
-    MPRIS2_PLAYER_INTERFACE
+import app
+from consts import (MPRIS2_PLAYER_INTERFACE, PLAYER_PROXY_INTERFACE,
+                    PLAYER_PROXY_OBJECT_PATH_PREFIX)
+import dbusext
+import errors
+import timer
+import utils
 
 class ConnectPlayerError(errors.BaseError):
     """

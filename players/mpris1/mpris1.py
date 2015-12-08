@@ -3,7 +3,7 @@
 # Copyright (C) 2012  Tiger Soldier
 #
 # This file is part of OSD Lyrics.
-# 
+#
 # OSD Lyrics is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -15,14 +15,17 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
-#/
+# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
+#
 
 import logging
-import dbus
-import osdlyrics
 
-from osdlyrics.player_proxy import *
+import dbus
+
+from osdlyrics.player_proxy import (
+    BasePlayer, BasePlayerProxy, PlayerInfo, CAPS_NEXT, CAPS_PAUSE, CAPS_PLAY,
+    CAPS_PREV, CAPS_SEEK, REPEAT_ALL, REPEAT_NONE, REPEAT_TRACK, STATUS_PAUSED,
+    STATUS_PLAYING, STATUS_STOPPED)
 from osdlyrics.metadata import Metadata
 
 PROXY_NAME = 'Mpris1'
@@ -94,7 +97,7 @@ class Mpris1Player(BasePlayer):
                                                                 self._caps_change_cb))
             self._name_watch = self.connection.watch_name_owner(mpris1_service_name,
                                                                 self._name_lost)
-        except Exception, e:
+        except Exception as e:
             logging.error('Fail to connect to mpris1 player %s: %s', player_name, e)
             self.disconnect()
 
