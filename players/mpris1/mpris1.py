@@ -192,7 +192,8 @@ class Mpris1Player(BasePlayer):
         return self._player.PositionGet()
 
     def _track_change_cb(self, metadata):
-        self.track_changed()
+        metadata = Metadata.from_dict(metadata)
+        self.track_changed(metadata)
 
     def _status_change_cb(self, status):
         self.status_changed()

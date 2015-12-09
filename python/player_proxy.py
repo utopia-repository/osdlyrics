@@ -690,11 +690,13 @@ class BasePlayer(dbusext.Object):
     def Seeked(self, position):
         pass
 
-    def track_changed(self):
+    def track_changed(self, metadata=None):
         self.__current_trackid += 1
         if self.__timer is not None:
             self.__timer.time = 0
-        self.Metadata = self._make_metadata(self.get_metadata())
+        if metadata is None:
+            metadata = self.get_metadata()
+        self.Metadata = self._make_metadata(metadata)
 
     def status_changed(self):
         """
