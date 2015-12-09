@@ -84,6 +84,7 @@ class Mpris1Player(BasePlayer):
                                            player_name)
         self._signals = [];
         self._name_watch = None
+        self._status_tuple = None, None, None, None
         try:
             self._player = dbus.Interface(self.connection.get_object(MPRIS1_PREFIX + player_name,
                                                                      '/Player'),
@@ -195,10 +196,16 @@ class Mpris1Player(BasePlayer):
         metadata = Metadata.from_dict(metadata)
         self.track_changed(metadata)
 
-    def _status_change_cb(self, status):
-        self.status_changed()
-        self.repeat_changed()
-        self.shuffle_changed()
+    def _status_change_cb(self, status_tuple):
+        status, shuffle, repeat, loop = status_tuple
+        old_status, old_shuffle, old_repeat, old_loop = self._status_tuple
+        self._status_tuple = status_tuple
+        if status != old_status:
+            self.status_changed()
+        if repeat != old_repeat or loop != old_loop:
+            self.repeat_changed()
+        if shuffle != old_shuffle:
+            self.shuffle_changed()
 
     def _caps_change_cb(self, caps):
         self.caps_changed()
