@@ -392,7 +392,8 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     @Metadata.setter
     def Metadata(self, metadata):
         self._metadata = metadata
-        self._timer.time = 0
+        self._timer.time = 0 if not self._player else self._player.Get(
+            MPRIS2_PLAYER_INTERFACE, 'Position')
 
     @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
                       type_signature='d')
