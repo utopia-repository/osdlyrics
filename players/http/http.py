@@ -33,6 +33,7 @@ import server
 
 CONNECTION_TIMEOUT = 1000
 
+
 class HttpPlayerProxy(BasePlayerProxy):
     def __init__(self):
         super(HttpPlayerProxy, self).__init__('Http')
@@ -45,7 +46,7 @@ class HttpPlayerProxy(BasePlayerProxy):
         self._connection_timer = glib.timeout_add(CONNECTION_TIMEOUT,
                                                   self._check_connection)
         self._player_counter = 1
-        
+
     def _handle_req(self, fd, event):
         logging.debug('new request %s, %s', fd, event)
         self._server.handle_request()
@@ -89,8 +90,9 @@ class HttpPlayerProxy(BasePlayerProxy):
             player.check_connection()
         return True
 
+
 class HttpPlayer(BasePlayer):
-    
+
     def __init__(self, proxy, name, caps):
         super(HttpPlayer, self).__init__(proxy, name)
         self._status = STATUS_STOPPED
@@ -113,7 +115,6 @@ class HttpPlayer(BasePlayer):
     def disconnect(self):
         self.proxy.remove_player(self.name)
         BasePlayer.disconnect(self)
-        
 
     def do_update_track(self, metadata):
         self._ping()
@@ -148,7 +149,7 @@ class HttpPlayer(BasePlayer):
         return self._caps
 
     def query(self, timestamp):
-        self._ping();
+        self._ping()
         cmds = []
         i = 0
         for cmd in self._cmds:
@@ -180,7 +181,9 @@ class HttpPlayer(BasePlayer):
         self._add_cmd('seek', {'pos': pos})
 
     def _add_cmd(self, cmd, params={}):
-        self._cmds.append((int(time.time() * 10), { 'cmd': cmd, 'params': params }))
+        self._cmds.append((int(time.time() * 10),
+                          {'cmd': cmd, 'params': params}))
+
 
 if __name__ == '__main__':
     proxy = HttpPlayerProxy()

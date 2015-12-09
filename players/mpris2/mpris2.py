@@ -49,7 +49,7 @@ def player_info_from_name(name):
 class ProxyObject(BasePlayerProxy):
     """ The DBus object for MPRIS2 player proxy
     """
-    
+
     def __init__(self):
         """
         """
@@ -60,7 +60,7 @@ class ProxyObject(BasePlayerProxy):
 
         The bus names in names with prefix of MPRIS2_PREFIX will be treated as MPRIS2
         players. The suffix of these names will be treated as player name
-        
+
         Arguments:
         - `names`: list of bus names
         """
@@ -144,7 +144,7 @@ class Mpris2Player(BasePlayer):
     @property
     def object_path(self):
         return self._object_path
-            
+
     @property
     def connected(self):
         return self._connected
@@ -160,10 +160,10 @@ class Mpris2Player(BasePlayer):
 
     def stop(self):
         self._player.Stop()
-    
+
     def play(self):
         self._player.Play()
-    
+
     def set_repeat(self, repeat):
         try:
             if repeat == REPEAT_TRACK:
@@ -219,14 +219,14 @@ class Mpris2Player(BasePlayer):
 
     def set_volume(self, volume):
         self._player_prop.Set(MPRIS2_IFACE, 'Volume', volume)
-    
+
     def get_volume(self):
         return self._player_prop.Get(MPRIS2_IFACE, 'Volume')
-    
+
     def set_position(self, time_in_mili):
         track_id = self._player_prop.Get(MPRIS2_IFACE, 'Metadata')['mpris:trackid']
         self._player.SetPosition(track_id, time_in_mili * 1000)
-    
+
     def get_position(self):
         return self._player_prop.Get(MPRIS2_IFACE, 'Position') / 1000
 
