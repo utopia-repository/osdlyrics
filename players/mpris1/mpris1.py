@@ -54,7 +54,7 @@ def player_info_from_name(name):
 class ProxyObject(BasePlayerProxy):
     """ The DBus object for MPRIS1 player proxy
     """
-    
+
     def __init__(self):
         """
         """
@@ -127,10 +127,10 @@ class Mpris1Player(BasePlayer):
 
     def stop(self):
         self._player.Stop()
-    
+
     def play(self):
         self._player.Play()
-    
+
     def set_repeat(self, repeat):
         if repeat in [REPEAT_TRACK, REPEAT_ALL]:
             self._player.Repeat(True)
@@ -176,7 +176,7 @@ class Mpris1Player(BasePlayer):
         if volume > 100:
             volume = 100
         self._player.VolumeSet(volume)
-    
+
     def get_volume(self):
         volume = float(self._player.VolumeGet()) / 100
         if volume > 1.0:
