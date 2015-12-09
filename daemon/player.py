@@ -24,6 +24,7 @@ import dbus.service
 import glib
 
 import osdlyrics
+from osdlyrics.app import App
 from osdlyrics.consts import (MPRIS2_PLAYER_INTERFACE, MPRIS2_ROOT_INTERFACE,
                               MPRIS2_OBJECT_PATH)
 from osdlyrics.dbusext.service import (Object as DBusObject,
@@ -554,7 +555,7 @@ class Mpris2Player(DBusObject):
 
 
 def test():
-    app = osdlyrics.App('osdlyrics')
+    app = App('osdlyrics')
     mpris2_name = dbus.service.BusName('org.mpris.osdlyrics', app.connection)
     player_support = PlayerSupport(app.connection)
     app.run()

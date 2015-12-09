@@ -25,6 +25,7 @@ import lyrics
 import dbus
 import config
 import lyricsource
+from osdlyrics.app import AlreadyRunningException, App
 from osdlyrics.metadata import Metadata
 from osdlyrics.consts import MPRIS2_OBJECT_PATH
 
@@ -42,9 +43,9 @@ class InvalidClientNameException(Exception):
         """
         Exception.__init__(self, 'Client bus name %s is invalid' % name)
 
-class MainApp(osdlyrics.App):
+class MainApp(App):
     def __init__(self, ):
-        osdlyrics.App.__init__(self, 'Daemon', False)
+        App.__init__(self, 'Daemon', False)
         self._player = player.PlayerSupport(self.connection)
         self._lyrics = lyrics.LyricsService(self.connection)
         self._connect_metadata_signal()
@@ -131,7 +132,7 @@ def main():
     try:
         app = MainApp()
         app.run()
-    except osdlyrics.AlreadyRunningException:
+    except AlreadyRunningException:
         print 'OSD Lyrics is running'
 
 if __name__ == '__main__':

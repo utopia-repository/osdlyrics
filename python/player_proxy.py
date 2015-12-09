@@ -23,7 +23,7 @@ import logging
 import dbus
 import dbus.service
 
-import app
+from app import App
 from consts import (MPRIS2_PLAYER_INTERFACE, PLAYER_PROXY_INTERFACE,
                     PLAYER_PROXY_OBJECT_PATH_PREFIX)
 from dbusext.service import Object as DBusObject, property as dbus_property
@@ -49,7 +49,7 @@ class BasePlayerProxy(dbus.service.Object):
         - `name`: The suffix of the bus name. The full bus name is
           `org.osdlyrics.PlayerProxy.` + name
         """
-        self._app = app.App('PlayerProxy.' + name)
+        self._app = App('PlayerProxy.' + name)
         super(BasePlayerProxy, self).__init__(
             conn=self._app.connection,
             object_path=PLAYER_PROXY_OBJECT_PATH_PREFIX + name)

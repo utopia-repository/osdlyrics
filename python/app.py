@@ -27,10 +27,6 @@ import consts
 from dbus.mainloop.glib import DBusGMainLoop
 import dbus.mainloop.glib
 
-__all__ = (
-    'AlreadyRunningException',
-    'App',
-    )
 
 gobject.threads_init()
 dbus.mainloop.glib.threads_init()
@@ -54,7 +50,7 @@ class App(object):
     To create an component application owning the bus name ``org.osdlyrics.MyApp``,
     just simply follow the code below:
 
-      app = osdlyrics.App('MyApp')
+      app = App('MyApp')
       app.run()
     """
 

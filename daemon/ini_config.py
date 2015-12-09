@@ -26,6 +26,9 @@ import osdlyrics.errors
 import ConfigParser
 import glib
 
+from osdlyrics.app import App
+
+
 class MalformedKeyError(osdlyrics.errors.BaseError):
     def __init__(self, *args):
         super(MalformedKeyError, self).__init__(*args)
@@ -268,7 +271,7 @@ def test():
     doctest.testmod()
 
 def run():
-    app = osdlyrics.App('Config')
+    app = App('Config')
     if len(sys.argv) > 1:
         ini_conf = IniConfig(app.connection, sys.argv[1])
     else:

@@ -30,6 +30,7 @@ import dbus.service
 import chardet
 
 import osdlyrics
+from osdlyrics.app import App
 import osdlyrics.config
 from osdlyrics.consts import (LYRICS_INTERFACE, LYRICS_OBJECT_PATH,
                               METADATA_ALBUM, METADATA_ARTIST, METADATA_TITLE)
@@ -451,7 +452,7 @@ def doc_test():
     doctest.testmod()
 
 def test():
-    app = osdlyrics.App('Lyrics', False)
+    app = App('Lyrics', False)
     lyrics_service = LyricsService(app.connection)
     app.run()
 
