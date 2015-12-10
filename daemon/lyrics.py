@@ -30,6 +30,7 @@ import dbus.service
 import chardet
 
 import osdlyrics
+from osdlyrics.app import App
 import osdlyrics.config
 from osdlyrics.consts import (LYRICS_INTERFACE, LYRICS_OBJECT_PATH,
                               METADATA_ALBUM, METADATA_ARTIST, METADATA_TITLE)
@@ -92,9 +93,9 @@ def decode_by_charset(content):
     r"""
     Detect the charset encoding of a string and decodes to unicode strings.
 
-    >>> decode_by_charset(u'\u4e2d\u6587'.encode('utf8'))
+    >>> decode_by_charset(u'\u4e2d\u6587'.encode('UTF-8'))
     u'\u4e2d\u6587'
-    >>> decode_by_charset(u'\u4e2d\u6587'.encode('gbk'))
+    >>> decode_by_charset(u'\u4e2d\u6587'.encode('HZ-GB-2312'))
     u'\u4e2d\u6587'
     """
     if not isinstance(content, str):
@@ -451,7 +452,7 @@ def doc_test():
     doctest.testmod()
 
 def test():
-    app = osdlyrics.App('Lyrics', False)
+    app = App('Lyrics', False)
     lyrics_service = LyricsService(app.connection)
     app.run()
 

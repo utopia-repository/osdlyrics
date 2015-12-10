@@ -26,8 +26,7 @@ from consts import \
     LYRIC_SOURCE_PLUGIN_BUS_NAME_PREFIX, \
     LYRIC_SOURCE_PLUGIN_INTERFACE, \
     LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX
-from dbusext import Object as DBusObject
-from dbusext import property as dbusproperty
+from dbusext.service import Object as DBusObject, property as dbus_property
 from app import App
 from metadata import Metadata
 from config import Config
@@ -58,7 +57,7 @@ class SearchResult(object):
     """
     def __init__(self, sourceid, downloadinfo, title='', artist='', album='', comment=''):
         """
-        
+
         Arguments:
         - `title`: The matched lyric title.
         - `artist`: The matched lyric artist.
@@ -140,7 +139,7 @@ class BaseLyricSourcePlugin(DBusObject):
 
     def __init__(self, id, name=None, watch_daemon=True):
         """
-        Create a new lyric source instance. 
+        Create a new lyric source instance.
 
         Arguments:
 
@@ -226,7 +225,7 @@ class BaseLyricSourcePlugin(DBusObject):
         Parameters:
 
         - `downloadinfo`: The additional info taken from `downloadinfo` field in
-          SearchResult objects. 
+          SearchResult objects.
 
         Returns: A string of the lyric content
         """
@@ -266,7 +265,7 @@ class BaseLyricSourcePlugin(DBusObject):
             del self._download_tasks[ticket]
             self.DownloadComplete(ticket, DOWNLOAD_CANCELLED, '')
 
-    @dbusproperty(dbus_interface=LYRIC_SOURCE_PLUGIN_INTERFACE,
+    @dbus_property(dbus_interface=LYRIC_SOURCE_PLUGIN_INTERFACE,
                   type_signature='s')
     def Name(self):
         return self._name
@@ -276,8 +275,8 @@ class BaseLyricSourcePlugin(DBusObject):
     def SearchComplete(self, ticket, status, results):
         logging.debug('search complete: ticket: %d, status: %d' % (ticket, status))
         pass
-        
-    
+
+
     @dbus.service.signal(dbus_interface=LYRIC_SOURCE_PLUGIN_INTERFACE,
                          signature='iiay')
     def DownloadComplete(self, ticket, status, result):
@@ -352,7 +351,7 @@ def test():
             return
 
         if search_tickets[ticket] != status:
-            logging.warning('Error! expect search %d with status %d but %d got', 
+            logging.warning('Error! expect search %d with status %d but %d got',
                             ticket, search_tickets[ticket], status)
             return
         logging.debug('Search #%d with status %d', ticket, status)

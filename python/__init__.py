@@ -18,9 +18,8 @@
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from app import AlreadyRunningException, App
 from consts import (
-    APP_MPRIS2_NAME, BUS_NAME, CONFIG_BUS_NAME, CONFIG_OBJECT_PATH,
+    APP_MPRIS2_NAME, BUS_NAME,
     DAEMON_INTERFACE, DAEMON_OBJECT_PATH, LYRIC_SOURCE_INTERFACE,
     LYRIC_SOURCE_OBJECT_PATH, LYRIC_SOURCE_PLUGIN_BUS_NAME_PREFIX,
     LYRIC_SOURCE_PLUGIN_INTERFACE, LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX,
@@ -29,14 +28,9 @@ from consts import (
     PLAYER_PROXY_OBJECT_PATH_PREFIX)
 
 
-# Stop pyflakes compaining about "imported but unused" objects/constants.
-AlreadyRunningException
-App
-
+# Stop pyflakes compaining about "imported but unused" constants.
 APP_MPRIS2_NAME
 BUS_NAME
-CONFIG_BUS_NAME
-CONFIG_OBJECT_PATH
 DAEMON_INTERFACE
 DAEMON_OBJECT_PATH
 LYRIC_SOURCE_INTERFACE

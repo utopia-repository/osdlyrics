@@ -3,7 +3,7 @@
 # Copyright (C) 2011  Tiger Soldier
 #
 # This file is part of OSD Lyrics.
-# 
+#
 # OSD Lyrics is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -15,27 +15,31 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
-#/
+# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
+#
 
 import logging
+
 import dbus.service
-import osdlyrics
-import osdlyrics.dbusext
-import osdlyrics.timer
 import glib
+
+import osdlyrics
+from osdlyrics.app import App
+from osdlyrics.consts import (MPRIS2_PLAYER_INTERFACE, MPRIS2_ROOT_INTERFACE,
+                              MPRIS2_OBJECT_PATH)
+from osdlyrics.dbusext.service import (Object as DBusObject,
+                                       property as dbus_property)
+import osdlyrics.timer
+
 import config
-from osdlyrics.consts import \
-    MPRIS2_PLAYER_INTERFACE, \
-    MPRIS2_ROOT_INTERFACE, \
-    MPRIS2_OBJECT_PATH
+
 
 class PlayerSupport(dbus.service.Object):
     """ Implement org.osdlyrics.Player Interface
     """
 
     DETECT_PLAYER_TIMEOUT = 1000
-    
+
     def __init__(self, conn):
         """
         Arguments:
@@ -53,7 +57,7 @@ class PlayerSupport(dbus.service.Object):
     def _start_detect_player(self):
         self._detect_timer = glib.timeout_add(self.DETECT_PLAYER_TIMEOUT,
                                               lambda : not self._detect_player())
-        
+
     def _detect_player(self):
         """
         Detects active players.
@@ -199,8 +203,9 @@ class PlayerSupport(dbus.service.Object):
     def current_player(self):
         return self._mpris2_player
 
-class Mpris2Player(osdlyrics.dbusext.Object):
-    
+
+class Mpris2Player(DBusObject):
+
     def __init__(self, conn):
         super(Mpris2Player, self).__init__(conn=conn,
                                            object_path=MPRIS2_OBJECT_PATH)
@@ -333,9 +338,9 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def OpenUri(self, uri):
         self._player.OpenUri(uri)
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='s',
-                      writeable=False)
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='s',
+                   writeable=False)
     def PlaybackStatus(self):
         return self._playback_status
 
@@ -344,8 +349,8 @@ class Mpris2Player(osdlyrics.dbusext.Object):
         self._playback_status = status
         self._setup_timer_status(status)
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='s')
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='s')
     def LoopStatus(self):
         return self._loop_status
 
@@ -357,8 +362,8 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def LoopStatus(self, loop_status):
         self._player.Set(MPRIS2_PLAYER_INTERFACE, 'LoopStatus', loop_status)
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='d')
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='d')
     def Rate(self):
         return self._player.Get(MPRIS2_PLAYER_INTERFACE, 'Rate')
 
@@ -370,8 +375,8 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def Rate(self, rate):
         self._player.Set(MPRIS2_PLAYER_INTERFACE, 'Rate', rate)
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='b')
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='b')
     def Shuffle(self):
         return self._shuffle
 
@@ -383,9 +388,9 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def Shuffle(self, shuffle):
         self._player.Set(MPRIS2_PLAYER_INTERFACE, 'Shuffle', shuffle)
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='a{sv}',
-                      writeable=False)
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='a{sv}',
+                   writeable=False)
     def Metadata(self):
         return self._metadata
 
@@ -395,8 +400,8 @@ class Mpris2Player(osdlyrics.dbusext.Object):
         self._timer.time = 0 if not self._player else self._player.Get(
             MPRIS2_PLAYER_INTERFACE, 'Position')
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='d')
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='d')
     def Volume(self):
         return self._player.Get(MPRIS2_PLAYER_INTERFACE, 'Volume')
 
@@ -408,24 +413,24 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def Volume(self, volume):
         return self._player.Set(MPRIS2_PLAYER_INTERFACE, 'Volume', volume)
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='x')
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='x')
     def Position(self):
         return self._timer.time * 1000
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='d')
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='d')
     def MinimumRate(self):
         return self._player.Get(MPRIS2_PLAYER_INTERFACE, 'MinimumRate')
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='d')
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='d')
     def MaximumRate(self):
         return self._player.Get(MPRIS2_PLAYER_INTERFACE, 'MaximumRate')
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='b',
-                      writeable=False)
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='b',
+                   writeable=False)
     def CanGoNext(self):
         return self._player.Get(MPRIS2_PLAYER_INTERFACE, 'CanGoNext')
 
@@ -433,9 +438,9 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def CanGoNext(self, value):
         pass
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='b',
-                      writeable=False)
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='b',
+                   writeable=False)
     def CanGoPrevious(self):
         return self._player.Get(MPRIS2_PLAYER_INTERFACE, 'CanGoPrevious')
 
@@ -443,9 +448,9 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def CanGoPrevious(self, value):
         pass
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='b',
-                      writeable=False)
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='b',
+                   writeable=False)
     def CanPlay(self):
         return self._player.Get(MPRIS2_PLAYER_INTERFACE, 'CanPlay')
 
@@ -453,9 +458,9 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def CanPlay(self, value):
         pass
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='b',
-                      writeable=False)
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='b',
+                   writeable=False)
     def CanPause(self):
         return self._player.Get(MPRIS2_PLAYER_INTERFACE, 'CanPause')
 
@@ -463,9 +468,9 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def CanPause(self, value):
         pass
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='b',
-                      writeable=False)
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='b',
+                   writeable=False)
     def CanSeek(self):
         return self._player.Get(MPRIS2_PLAYER_INTERFACE, 'CanSeek')
 
@@ -473,8 +478,8 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def CanSeek(self, value):
         pass
 
-    @osdlyrics.dbusext.property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
-                      type_signature='b')
+    @dbus_property(dbus_interface=MPRIS2_PLAYER_INTERFACE,
+                   type_signature='b')
     def CanControl(self):
         return self._player.Get(MPRIS2_PLAYER_INTERFACE, 'CanControl')
 
@@ -499,13 +504,13 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def Quit(self):
         pass
 
-    @osdlyrics.dbusext.service.property(dbus_interface=MPRIS2_ROOT_INTERFACE,
-                                        type_signature='b')
+    @dbus_property(dbus_interface=MPRIS2_ROOT_INTERFACE,
+                   type_signature='b')
     def CanQuit(self):
         return False
 
-    @osdlyrics.dbusext.service.property(dbus_interface=MPRIS2_ROOT_INTERFACE,
-                                        type_signature='b')
+    @dbus_property(dbus_interface=MPRIS2_ROOT_INTERFACE,
+                   type_signature='b')
     def Fullscreen(self):
         return False
 
@@ -513,46 +518,48 @@ class Mpris2Player(osdlyrics.dbusext.Object):
     def Fullscreen(self, value):
         pass
 
-    @osdlyrics.dbusext.service.property(dbus_interface=MPRIS2_ROOT_INTERFACE,
-                                        type_signature='b')
+    @dbus_property(dbus_interface=MPRIS2_ROOT_INTERFACE,
+                   type_signature='b')
     def CanSetFullscreen(self):
         return False
 
-    @osdlyrics.dbusext.service.property(dbus_interface=MPRIS2_ROOT_INTERFACE,
-                                        type_signature='b')
+    @dbus_property(dbus_interface=MPRIS2_ROOT_INTERFACE,
+                   type_signature='b')
     def CanRaise(self):
         return False
 
-    @osdlyrics.dbusext.service.property(dbus_interface=MPRIS2_ROOT_INTERFACE,
-                                        type_signature='b')
+    @dbus_property(dbus_interface=MPRIS2_ROOT_INTERFACE,
+                   type_signature='b')
     def HasTrackList(self):
         return False
 
-    @osdlyrics.dbusext.service.property(dbus_interface=MPRIS2_ROOT_INTERFACE,
-                                        type_signature='s')
+    @dbus_property(dbus_interface=MPRIS2_ROOT_INTERFACE,
+                   type_signature='s')
     def Identity(self):
         return config.PROGRAM_NAME
 
-    @osdlyrics.dbusext.service.property(dbus_interface=MPRIS2_ROOT_INTERFACE,
-                                        type_signature='s')
+    @dbus_property(dbus_interface=MPRIS2_ROOT_INTERFACE,
+                   type_signature='s')
     def DesktopEntry(self):
         return 'osdlyrics'
 
-    @osdlyrics.dbusext.service.property(dbus_interface=MPRIS2_ROOT_INTERFACE,
-                                        type_signature='as')
+    @dbus_property(dbus_interface=MPRIS2_ROOT_INTERFACE,
+                   type_signature='as')
     def SupportedUriSchemes(self):
         return dbus.Array(signature='s')
 
-    @osdlyrics.dbusext.service.property(dbus_interface=MPRIS2_ROOT_INTERFACE,
-                                        type_signature='as')
+    @dbus_property(dbus_interface=MPRIS2_ROOT_INTERFACE,
+                   type_signature='as')
     def SupportedMimeTypes(self):
         return dbus.Array(signature='s')
 
+
 def test():
-    app = osdlyrics.App('osdlyrics')
+    app = App('osdlyrics')
     mpris2_name = dbus.service.BusName('org.mpris.osdlyrics', app.connection)
     player_support = PlayerSupport(app.connection)
     app.run()
+
 
 if __name__ == '__main__':
     test()

@@ -3,7 +3,7 @@
 # Copyright (C) 2011  Tiger Soldier
 #
 # This file is part of OSD Lyrics.
-# 
+#
 # OSD Lyrics is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -15,20 +15,19 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
-#/
+# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
+#
 
-import logging
 import dbus
-import osdlyrics
-import osdlyrics.dbusext
-import osdlyrics.config
+import logging
 
-__all__ = ('LyricSource',)
+import osdlyrics
+import osdlyrics.config
 
 STATUS_SUCCESS = 0
 STATUS_CANCELLED = 1
 STATUS_FAILURE = 2
+
 
 def validateticket(component):
     def decorator(func):
@@ -43,7 +42,7 @@ def validateticket(component):
             func(self, source_id, ticket, *args, **kwargs)
         return dec_func
     return decorator
-            
+
 
 class LyricSource(dbus.service.Object):
     """ Implement org.osdlyrics.LyricSource interface

@@ -25,7 +25,6 @@ import dbus.service
 import dbus.types
 
 import osdlyrics
-import osdlyrics.dbusext
 from osdlyrics.metadata import Metadata
 from osdlyrics.player_proxy import (
     BasePlayer, BasePlayerProxy, PlayerInfo, CAPS_NEXT, CAPS_PAUSE, CAPS_PLAY,
