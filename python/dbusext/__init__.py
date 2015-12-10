@@ -17,9 +17,3 @@
 # You should have received a copy of the GNU General Public License
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
 #
-
-from service import Object, property
-
-# Stop pyflakes compaining about "imported but unused" objects/constants.
-Object
-property
