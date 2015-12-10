@@ -74,7 +74,9 @@ class App(object):
             self.request_bus_name(consts.APP_BUS_PREFIX + name,
                                   singleton)
         except dbus.NameExistsException:
-            raise AlreadyRunningException('Process with bus name %s is already running' % consts.APP_BUS_PREFIX + name)
+            raise AlreadyRunningException(
+                'Process with bus name %s is already running' % (
+                    consts.APP_BUS_PREFIX + name))
         self._parse_options()
 
     def _parse_options(self):

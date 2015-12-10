@@ -93,9 +93,9 @@ def decode_by_charset(content):
     r"""
     Detect the charset encoding of a string and decodes to unicode strings.
 
-    >>> decode_by_charset(u'\u4e2d\u6587'.encode('utf8'))
+    >>> decode_by_charset(u'\u4e2d\u6587'.encode('UTF-8'))
     u'\u4e2d\u6587'
-    >>> decode_by_charset(u'\u4e2d\u6587'.encode('gbk'))
+    >>> decode_by_charset(u'\u4e2d\u6587'.encode('HZ-GB-2312'))
     u'\u4e2d\u6587'
     """
     if not isinstance(content, str):
