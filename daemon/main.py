@@ -27,7 +27,7 @@ import config
 import lyricsource
 from osdlyrics.app import AlreadyRunningException, App
 from osdlyrics.metadata import Metadata
-from osdlyrics.consts import MPRIS2_OBJECT_PATH
+from osdlyrics.consts import CONFIG_BUS_NAME, MPRIS2_OBJECT_PATH
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -63,7 +63,7 @@ class MainApp(App):
 
     def _activate_config(self, ):
         try:
-            self.connection.activate_name_owner(osdlyrics.CONFIG_BUS_NAME)
+            self.connection.activate_name_owner(CONFIG_BUS_NAME)
         except:
             logging.error("Cannot activate config service")
 
