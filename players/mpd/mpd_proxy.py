@@ -22,24 +22,31 @@
 """
 
 import __builtin__
+import logging
+import os
+import select
+
 import dbus
 import dbus.service
 import glib
 import gobject
-import logging
-import mpd
-import os
+try:
+    import mpd
+except ImportError:
+    mpd = None
+
 import osdlyrics
 import osdlyrics.consts
-import select
-
 from osdlyrics.metadata import Metadata
-from osdlyrics.player_proxy import *
+from osdlyrics.player_proxy import (
+    BasePlayer, BasePlayerProxy, PlayerInfo, CAPS_NEXT, CAPS_PAUSE, CAPS_PLAY,
+    CAPS_PREV, CAPS_SEEK, REPEAT_ALL, REPEAT_NONE, REPEAT_TRACK, STATUS_PAUSED,
+    STATUS_PLAYING, STATUS_STOPPED)
 from osdlyrics.timer import Timer
 from osdlyrics.utils import cmd_exists
 
-if not hasattr(mpd.MPDClient(), 'send_idle'):
-    logging.error('Require python-mpd >= 0.3')
+if mpd is None or not hasattr(mpd.MPDClient(), 'send_idle'):
+    logging.error('python-mpd >= 0.3 is required.')
     exit(1)
 
 PLAYER_NAME = 'Mpd'
@@ -114,10 +121,11 @@ class MpdProxy(BasePlayerProxy):
             self._client = mpd.MPDClient()
         try:
             self._client.connect(self._host, self._port)
-        except IOError as (errno, strerror):
-            logging.info("Could not connect to '%s': %s", self._host, strerror)
+        except IOError as e:
+            logging.info("Could not connect to '%s': %s", self._host,
+                         e.strerror)
             return False
-        except MPDError as e:
+        except mpd.MPDError as e:
             logging.info("Could not connect to '%s': %s", self._host, e)
             return False
         self._io_watch = gobject.io_add_watch(self._client,
@@ -161,7 +169,7 @@ class MpdProxy(BasePlayerProxy):
                 logging.debug('client pending: %s', self._client._pending)
                 retval = getattr(self._client, 'fetch_' + cmd_item.command)()
                 cmd_item.call(retval)
-            except Exception, e:
+            except Exception as e:
                logging.exception(e)
                self._on_disconnect()
             return True
