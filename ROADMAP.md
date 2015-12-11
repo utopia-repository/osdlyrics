@@ -1,6 +1,6 @@
 # OSD Lyrics roadmap
 
-## O.5 release requirements (and further planning)
+## 0.5 release requirements (and further planning)
 
 I envision 0.5 release as a rather stable one, wrapping up the work put into
 it by Tiger Soldier et al. This release should not be focused on more features
@@ -28,15 +28,16 @@ bugfixes. See below for 0.6 release criteria.
   when in this troubled state.
 
 * Some lyrics (with Chinese characters, I think) cause a crash in Cairo:
-  osdlyrics: cairo-scaled-font.c:459: _cairo_scaled_glyph_page_destroy:
-  Assertion !scaled_font->cache_frozen failed.
+
+  `osdlyrics: cairo-scaled-font.c:459: _cairo_scaled_glyph_page_destroy:`
+  `Assertion !scaled_font->cache_frozen failed.`
 
 ### Communicate with players flawlessly
 
 * MPRIS 1.0 works quite well but timing becomes inaccurate when a player seeks
   to anywhere but the beginning of a track.
 
-* I couldn't get MPRIS 2 to work well with VLC or Audacious.
+* I couldn't get MPRIS 2.x to work well with VLC or Audacious.
 
 * MPD proxy needs to be tested (at all).
 
@@ -60,7 +61,8 @@ bugfixes. See below for 0.6 release criteria.
 
 * Extended LRC format is not handled at all currently. <mm:ss.ms> timestamps
   should now be either plain removed, or tokenized but not shown. An example:
-  [00:33.60]Étaient <00:33.79>sur <00:33.93>terre.
+
+  `[00:33.60]Étaient <00:33.79>sur <00:33.93>terre.`
 
 * Some more, prominent lyrics sources?
 
@@ -90,7 +92,7 @@ any drawn from a wish list:
   graphics (better blur, scrolling) and more modes (multiple lines in OSD?).
 
 * Music played on web sites could use lyrics too, so cooperate with web
-  browsers -- try to find or implement third-party MPRIS 2 proxies for them.
+  browsers -- try to find or implement third-party MPRIS 2.x proxies for them.
   The same applies to streams (radio).
 
 * LRC editor, see e.g. lrcShow-X.
