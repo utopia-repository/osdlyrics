@@ -17,13 +17,3 @@
 # You should have received a copy of the GNU General Public License
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
 #
-
-from consts import (
-    PLAYER_PROXY_BUS_NAME_PREFIX, PLAYER_PROXY_INTERFACE,
-    PLAYER_PROXY_OBJECT_PATH_PREFIX)
-
-
-# Stop pyflakes compaining about "imported but unused" constants.
-PLAYER_PROXY_BUS_NAME_PREFIX
-PLAYER_PROXY_INTERFACE
-PLAYER_PROXY_OBJECT_PATH_PREFIX

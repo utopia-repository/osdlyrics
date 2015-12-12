@@ -31,7 +31,6 @@ from osdlyrics.metadata import Metadata
 
 MPRIS1_INTERFACE = 'org.freedesktop.MediaPlayer'
 MPRIS1_PREFIX = 'org.mpris.'
-PROXY_NAME = 'Mpris1'
 
 MPRIS1_CAN_GO_NEXT           = 1 << 0,
 MPRIS1_CAN_GO_PREV           = 1 << 1,

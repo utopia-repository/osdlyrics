@@ -24,7 +24,6 @@ import dbus
 import dbus.service
 import dbus.types
 
-import osdlyrics
 from osdlyrics.consts import MPRIS2_OBJECT_PATH, MPRIS2_PLAYER_INTERFACE
 from osdlyrics.metadata import Metadata
 from osdlyrics.player_proxy import (
@@ -32,10 +31,6 @@ from osdlyrics.player_proxy import (
     CAPS_PREV, CAPS_SEEK, REPEAT_ALL, REPEAT_NONE, REPEAT_TRACK, STATUS_PAUSED,
     STATUS_PLAYING, STATUS_STOPPED)
 
-PROXY_NAME = 'Mpris2'
-BUS_NAME = osdlyrics.PLAYER_PROXY_BUS_NAME_PREFIX + PROXY_NAME
-PROXY_IFACE = osdlyrics.PLAYER_PROXY_INTERFACE
-PROXY_PATH = osdlyrics.PLAYER_PROXY_OBJECT_PATH_PREFIX + PROXY_NAME
 MPRIS2_PREFIX = 'org.mpris.MediaPlayer2.'
 
 
