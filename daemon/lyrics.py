@@ -32,13 +32,15 @@ import chardet
 import osdlyrics
 from osdlyrics.app import App
 import osdlyrics.config
-from osdlyrics.consts import (LYRICS_INTERFACE, LYRICS_OBJECT_PATH,
-                              METADATA_ALBUM, METADATA_ARTIST, METADATA_TITLE)
+from osdlyrics.consts import METADATA_ALBUM, METADATA_ARTIST, METADATA_TITLE
 import osdlyrics.lrc
 from osdlyrics.metadata import Metadata
 from osdlyrics.pattern import expand_file, expand_path
 
 import lrcdb
+
+LYRICS_INTERFACE = 'org.osdlyrics.Lyrics'
+LYRICS_OBJECT_PATH = '/org/osdlyrics/Lyrics'
 
 DEFAULT_FILE_PATTERNS = [
     '%p-%t',

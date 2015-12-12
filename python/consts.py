@@ -21,8 +21,6 @@
 # DBus names, interfaces and object paths
 
 DAEMON_BUS_NAME = 'org.osdlyrics.Daemon'
-LYRICS_INTERFACE = 'org.osdlyrics.Lyrics'
-LYRICS_OBJECT_PATH = '/org/osdlyrics/Lyrics'
 CONFIG_BUS_NAME = 'org.osdlyrics.Config'
 CONFIG_INTERFACE = 'org.osdlyrics.Config'
 CONFIG_OBJECT_PATH = '/org/osdlyrics/Config'
