@@ -24,8 +24,21 @@ bugfixes. See below for 0.6 release criteria.
   mode. Switching the mode back and forth fixes that. But the problem comes
   back when the panel is supposedly destroyed and then recreated by switching
   to windowed mode and back to OSD mode.
-  GTK errors (from deep inside the library) appear when the panel is clicked
-  when in this troubled state.
+  The following GTK errors (from deep inside the library) appear when the panel
+  is clicked when in this troubled state:
+
+When a mouse button is pressed:
+
+```
+(OSD Lyrics:8291): Gdk-CRITICAL **: IA__gdk_window_get_events: assertion 'GDK_IS_WINDOW (window)' failed
+(OSD Lyrics:8291): GLib-GObject-CRITICAL **: g_object_ref: assertion 'G_IS_OBJECT (object)' failed
+```
+
+When the button is released:
+
+```
+(OSD Lyrics:8291): GLib-GObject-CRITICAL **: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+```
 
 * Some lyrics (with Chinese characters, I think) cause a crash in Cairo:
 
