@@ -19,9 +19,13 @@
 #
 
 import logging
+
 import dbus
 
-import consts
+from consts import CONFIG_BUS_NAME, CONFIG_OBJECT_PATH
+
+CONFIG_INTERFACE = 'org.osdlyrics.Config'
+
 
 class Config(object):
     """ Helper class to retrive configs from OSD Lyrics through DBus
@@ -33,18 +37,18 @@ class Config(object):
 
     Values can be monitored by connect_change function.
     """
-    
+
     def __init__(self, conn, follow_name_owner_changes=True):
         """
         Arguments:
         - `conn`: DBus connection
         """
         self._conn = conn
-        self._proxy = conn.get_object(consts.CONFIG_BUS_NAME,
-                                      consts.CONFIG_OBJECT_PATH,
+        self._proxy = conn.get_object(CONFIG_BUS_NAME,
+                                      CONFIG_OBJECT_PATH,
                                       follow_name_owner_changes=follow_name_owner_changes)
         self._proxy = dbus.Interface(self._proxy,
-                                     consts.CONFIG_INTERFACE)
+                                     CONFIG_INTERFACE)
         self._signals = {}
         self._proxy.connect_to_signal('ValueChanged',
                                       self._value_changed_cb)
@@ -156,7 +160,7 @@ def test():
         typename = name.split('/')[1]
         logging.debug('%s has been changed to %s' % (name,
                                                      getattr(config, 'get_' + typename)(name)))
-    
+
     import glib
     from dbus.mainloop.glib import DBusGMainLoop
     loop = glib.MainLoop()

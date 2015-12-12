@@ -22,7 +22,6 @@
 
 DAEMON_BUS_NAME = 'org.osdlyrics.Daemon'
 CONFIG_BUS_NAME = 'org.osdlyrics.Config'
-CONFIG_INTERFACE = 'org.osdlyrics.Config'
 CONFIG_OBJECT_PATH = '/org/osdlyrics/Config'
 PLAYER_PROXY_INTERFACE = 'org.osdlyrics.PlayerProxy'
 PLAYER_PROXY_OBJECT_PATH_PREFIX = '/org/osdlyrics/PlayerProxy/'
