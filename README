@@ -11,9 +11,23 @@ OSD Lyrics is released under GPL v3. See COPYING for more detail.
 
 To use OSD Lyrics, just launch your media player, then launch OSD Lyrics. OSD Lyrics will detect and connect to the media player. 
 
+## Troubleshooting
+>Here is a place to register some troubleshooting with the development or with the compilation.
+
+When run the `autogen.sh` script or run command like `autoconf` or `autoreconf -i`:
+
+- if have error with output containing these lines: `syntax error near unexpected token '0.35.0'` and `IT_PROG_INTLTOOL(0.35.0)`,
+  try to install *intltool* package.
+  On debian like system: `sudo apt-get install intltool`
+
+- if have a problem with a package dependencies, just install the needed package (particulary the development version).
+
 ## Contact Us
 The home page of OSD Lyrics is http://code.google.com/p/osd-lyrics/
-The source repository is on Github: http://github.com/tigersoldier/osd-lyrics
+
+The official source repository is on Github: http://github.com/tigersoldier/osd-lyrics
+
+Actually, to get the most maintained source and advanced development, just look at this repository on Github: https://github.com/PedroHLC/osdlyrics
 
 If there is any feature request, suggestion, or bug, feel free to report them to http://code.google.com/p/osd-lyrics/issues/list
 
