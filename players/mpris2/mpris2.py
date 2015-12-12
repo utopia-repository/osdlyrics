@@ -38,7 +38,6 @@ PROXY_PATH = osdlyrics.PLAYER_PROXY_OBJECT_PATH_PREFIX + PROXY_NAME
 MPRIS2_PREFIX = 'org.mpris.MediaPlayer2.'
 MPRIS2_IFACE = 'org.mpris.MediaPlayer2.Player'
 MPRIS2_PATH = '/org/mpris/MediaPlayer2'
-MPRIS1_IFACE = osdlyrics.MPRIS1_INTERFACE
 
 def player_info_from_name(name):
     """ Returns a dict representing a player info by the given name
