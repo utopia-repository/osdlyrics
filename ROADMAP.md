@@ -24,8 +24,21 @@ bugfixes. See below for 0.6 release criteria.
   mode. Switching the mode back and forth fixes that. But the problem comes
   back when the panel is supposedly destroyed and then recreated by switching
   to windowed mode and back to OSD mode.
-  GTK errors (from deep inside the library) appear when the panel is clicked
-  when in this troubled state.
+  The following GTK errors (from deep inside the library) appear when the panel
+  is clicked when in this troubled state:
+
+When a mouse button is pressed:
+
+```
+(OSD Lyrics:8291): Gdk-CRITICAL **: IA__gdk_window_get_events: assertion 'GDK_IS_WINDOW (window)' failed
+(OSD Lyrics:8291): GLib-GObject-CRITICAL **: g_object_ref: assertion 'G_IS_OBJECT (object)' failed
+```
+
+When the button is released:
+
+```
+(OSD Lyrics:8291): GLib-GObject-CRITICAL **: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+```
 
 * Some lyrics (with Chinese characters, I think) cause a crash in Cairo:
 
@@ -88,11 +101,18 @@ After 0.6 is released, it enters maintenance mode and receives only bugfixes in
 0.6.x series. 0.7 development starts, focusing on exciting features, such as
 any drawn from a wish list:
 
-* More eye candy, even though it looks quite good even now. This means smoother
-  graphics (better blur, scrolling) and more modes (multiple lines in OSD?).
+* Prefetch lyrics for the next track by peeking in a playlist.
+
+* Smoother scrolling, improved blur.
+
+* More modes: multiple scrolling lines in OSD?
 
 * Music played on web sites could use lyrics too, so cooperate with web
   browsers -- try to find or implement third-party MPRIS 2.x proxies for them.
   The same applies to streams (radio).
 
-* LRC editor, see e.g. lrcShow-X.
+* LRC editor, see e.g. lrcShow-X, or LRC editing mode. We already can change
+  the global offset by scrolling over the tray icon thanks to Corax26. So how
+  about changing the offset of the current line in lyrics editing mode (either
+  by the scrolling button of even using the mouse to shift the line
+  horizontally)?
