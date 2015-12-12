@@ -39,6 +39,10 @@ msgstr "Hledá se text na %s…"
 msgid "Lyrics not found"
 msgstr "Text se nenašel"
 
+#: ../src/ol_main.c:192 ../src/ol_search_dialog.c:239
+msgid "Fail to download lyric"
+msgstr "Nepodařilo se stáhnout text"
+
 #: ../src/ol_main.c:209
 msgid "Downloading lyric"
 msgstr "Stahuje se text"
@@ -96,6 +100,10 @@ msgstr "Název"
 msgid "Artist"
 msgstr "Autor"
 
+#: ../src/ol_lyric_candidate_list.c:57
+msgid "Album"
+msgstr "Album"
+
 #: ../src/ol_search_dialog.c:29
 #, c-format
 msgid "Searching lyrics from %s..."
@@ -110,6 +118,26 @@ msgstr "Nenašel se žádný text."
 #, c-format
 msgid "%d lyrics found :)"
 msgstr "Našlo se %d textů."
+
+#: ../src/ol_search_dialog.c:32
+msgid "Fail to search. Please check network connection"
+msgstr "Stahování se nedaří, zkontrolujte síťové připojení"
+
+#: ../src/ol_search_dialog.c:33
+msgid "Cancelled"
+msgstr "Zrušeno"
+
+#: ../src/ol_search_dialog.c:96
+msgid "Downloading..."
+msgstr "Stahuje se…"
+
+#: ../src/ol_search_dialog.c:228
+msgid "Download complete, but fail to assign to the track"
+msgstr "Staženo, ale nepodařilo se text přiřadit ke skladbě"
+
+#: ../src/ol_search_dialog.c:232
+msgid "Download complete"
+msgstr "Staženo"
 
 #: ../src/ol_player_chooser.c:247
 msgid "Supported players"
@@ -634,3 +662,15 @@ msgstr "vršek písmen"
 #: ../data/dialogs.glade.h:6
 msgid "translator-credits"
 msgstr "Ondřej Svoboda <ondrej@svobodasoft.cz>"
+
+#: ../data/osdlyrics.desktop.in.h:2
+msgid "Lyrics Show"
+msgstr "Přehrávač textů"
+
+#: ../data/osdlyrics.desktop.in.h:3
+msgid "Download and show lyrics for your favorite media player"
+msgstr "Stahuje a zobrazuje časovaný text k přehrávaným skladbám"
+
+#: ../lyricsources/xiami/xiami.py:49
+msgid "Xiami"
+msgstr ""
