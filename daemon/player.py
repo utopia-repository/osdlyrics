@@ -33,6 +33,8 @@ import osdlyrics.timer
 import config
 
 MPRIS2_ROOT_INTERFACE = 'org.mpris.MediaPlayer2'
+PLAYER_INTERFACE = 'org.osdlyrics.Player'
+PLAYER_OBJECT_PATH = '/org/osdlyrics/Player'
 
 
 class PlayerSupport(dbus.service.Object):
@@ -48,7 +50,7 @@ class PlayerSupport(dbus.service.Object):
         """
         dbus.service.Object.__init__(self,
                                      conn=conn,
-                                     object_path=osdlyrics.PLAYER_OBJECT_PATH)
+                                     object_path=PLAYER_OBJECT_PATH)
         self._active_player = None
         self._player_proxies = {}
         self._connect_player_proxies()
@@ -158,7 +160,7 @@ class PlayerSupport(dbus.service.Object):
             except:
                 pass
 
-    @dbus.service.method(dbus_interface=osdlyrics.PLAYER_INTERFACE,
+    @dbus.service.method(dbus_interface=PLAYER_INTERFACE,
                          in_signature='',
                          out_signature='aa{sv}')
     def ListSupportedPlayers(self):
@@ -170,7 +172,7 @@ class PlayerSupport(dbus.service.Object):
                 pass
         return ret
 
-    @dbus.service.method(dbus_interface=osdlyrics.PLAYER_INTERFACE,
+    @dbus.service.method(dbus_interface=PLAYER_INTERFACE,
                          in_signature='',
                          out_signature='aa{sv}')
     def ListActivatablePlayers(self):
@@ -182,7 +184,7 @@ class PlayerSupport(dbus.service.Object):
                 pass
         return ret
 
-    @dbus.service.method(dbus_interface=osdlyrics.PLAYER_INTERFACE,
+    @dbus.service.method(dbus_interface=PLAYER_INTERFACE,
                          in_signature='',
                          out_signature='ba{sv}')
     def GetCurrentPlayer(self):
@@ -190,12 +192,12 @@ class PlayerSupport(dbus.service.Object):
             return False, {}
         return True, self._active_player['info']
 
-    @dbus.service.signal(dbus_interface=osdlyrics.PLAYER_INTERFACE,
+    @dbus.service.signal(dbus_interface=PLAYER_INTERFACE,
                          signature='')
     def PlayerLost(self):
         pass
 
-    @dbus.service.signal(dbus_interface=osdlyrics.PLAYER_INTERFACE,
+    @dbus.service.signal(dbus_interface=PLAYER_INTERFACE,
                          signature='a{sv}')
     def PlayerConnected(self, player_info):
         pass
