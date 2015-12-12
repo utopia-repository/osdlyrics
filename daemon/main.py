@@ -16,21 +16,25 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
-#/
+#
 
 import logging
-import osdlyrics
-import player
-import lyrics
+
 import dbus
-import config
-import lyricsource
+
 from osdlyrics.app import AlreadyRunningException, App
-from osdlyrics.metadata import Metadata
 from osdlyrics.consts import (CONFIG_BUS_NAME, DAEMON_BUS_NAME,
                               MPRIS2_OBJECT_PATH)
+from osdlyrics.metadata import Metadata
+
+import config
+import lyrics
+import lyricsource
+import player
 
 APP_MPRIS2_NAME = 'org.mpris.MediaPlayer2.osdlyrics'
+DAEMON_INTERFACE = 'org.osdlyrics.Daemon'
+DAEMON_OBJECT_PATH = '/org/osdlyrics/Daemon'
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -92,11 +96,11 @@ class DaemonObject(dbus.service.Object):
     def __init__(self, app):
         dbus.service.Object.__init__(self,
                                      conn=app.connection,
-                                     object_path=osdlyrics.DAEMON_OBJECT_PATH)
+                                     object_path=DAEMON_OBJECT_PATH)
         self._watch_clients = {}
         self._app = app
 
-    @dbus.service.method(dbus_interface=osdlyrics.DAEMON_INTERFACE,
+    @dbus.service.method(dbus_interface=DAEMON_INTERFACE,
                          in_signature='s',
                          out_signature='')
     def Hello(self, client_bus_name):
@@ -109,13 +113,13 @@ class DaemonObject(dbus.service.Object):
         else:
             raise InvalidClientNameException(client_bus_name)
 
-    @dbus.service.method(dbus_interface=osdlyrics.DAEMON_INTERFACE,
+    @dbus.service.method(dbus_interface=DAEMON_INTERFACE,
                          in_signature='',
                          out_signature='s')
     def GetVersion(self):
         return config.PACKAGE_VERSION
 
-    @dbus.service.method(dbus_interface=osdlyrics.DAEMON_INTERFACE,
+    @dbus.service.method(dbus_interface=DAEMON_INTERFACE,
                          in_signature='',
                          out_signature='')
     def Quit(self):
