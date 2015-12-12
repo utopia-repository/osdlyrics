@@ -27,7 +27,10 @@ import config
 import lyricsource
 from osdlyrics.app import AlreadyRunningException, App
 from osdlyrics.metadata import Metadata
-from osdlyrics.consts import CONFIG_BUS_NAME, MPRIS2_OBJECT_PATH
+from osdlyrics.consts import (CONFIG_BUS_NAME, DAEMON_BUS_NAME,
+                              MPRIS2_OBJECT_PATH)
+
+APP_MPRIS2_NAME = 'org.mpris.MediaPlayer2.osdlyrics'
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -50,13 +53,13 @@ class MainApp(App):
         self._lyrics = lyrics.LyricsService(self.connection)
         self._connect_metadata_signal()
         self._activate_config()
-        self.request_bus_name(osdlyrics.APP_MPRIS2_NAME)
+        self.request_bus_name(APP_MPRIS2_NAME)
         self._daemon_object = DaemonObject(self)
         self._lyricsource = lyricsource.LyricSource(self.connection)
         self._lyrics.set_current_metadata(Metadata.from_dict(self._player.current_player.Metadata))
 
     def _connect_metadata_signal(self, ):
-        self._mpris_proxy = self.connection.get_object(osdlyrics.BUS_NAME,
+        self._mpris_proxy = self.connection.get_object(DAEMON_BUS_NAME,
                                                        MPRIS2_OBJECT_PATH)
         self._metadata_signal = self._mpris_proxy.connect_to_signal('PropertiesChanged',
                                                                     self._player_properties_changed)
