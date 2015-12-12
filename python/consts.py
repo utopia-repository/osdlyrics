@@ -36,11 +36,8 @@ MPRIS2_INTERFACE = 'org.mpris.MediaPlayer2'
 MPRIS2_ROOT_INTERFACE = 'org.mpris.MediaPlayer2'
 MPRIS2_PLAYER_INTERFACE = 'org.mpris.MediaPlayer2.Player'
 MPRIS2_OBJECT_PATH = '/org/mpris/MediaPlayer2'
-LYRIC_SOURCE_PLUGIN_BUS_NAME_PREFIX = 'org.osdlyrics.LyricSourcePlugin.'
 LYRIC_SOURCE_PLUGIN_INTERFACE = 'org.osdlyrics.LyricSourcePlugin'
 LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX = '/org/osdlyrics/LyricSourcePlugin/'
-LYRIC_SOURCE_OBJECT_PATH = '/org/osdlyrics/LyricSource'
-LYRIC_SOURCE_INTERFACE = 'org.osdlyrics.LyricSource'
 
 # Metadata keys
 METADATA_TITLE = 'title'
