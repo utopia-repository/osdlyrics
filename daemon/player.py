@@ -25,13 +25,14 @@ import glib
 
 import osdlyrics
 from osdlyrics.app import App
-from osdlyrics.consts import (MPRIS2_PLAYER_INTERFACE, MPRIS2_ROOT_INTERFACE,
-                              MPRIS2_OBJECT_PATH)
+from osdlyrics.consts import MPRIS2_PLAYER_INTERFACE, MPRIS2_OBJECT_PATH
 from osdlyrics.dbusext.service import (Object as DBusObject,
                                        property as dbus_property)
 import osdlyrics.timer
 
 import config
+
+MPRIS2_ROOT_INTERFACE = 'org.mpris.MediaPlayer2'
 
 
 class PlayerSupport(dbus.service.Object):

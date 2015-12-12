@@ -25,6 +25,7 @@ import dbus.service
 import dbus.types
 
 import osdlyrics
+from osdlyrics.consts import MPRIS2_OBJECT_PATH, MPRIS2_PLAYER_INTERFACE
 from osdlyrics.metadata import Metadata
 from osdlyrics.player_proxy import (
     BasePlayer, BasePlayerProxy, PlayerInfo, CAPS_NEXT, CAPS_PAUSE, CAPS_PLAY,
@@ -36,13 +37,13 @@ BUS_NAME = osdlyrics.PLAYER_PROXY_BUS_NAME_PREFIX + PROXY_NAME
 PROXY_IFACE = osdlyrics.PLAYER_PROXY_INTERFACE
 PROXY_PATH = osdlyrics.PLAYER_PROXY_OBJECT_PATH_PREFIX + PROXY_NAME
 MPRIS2_PREFIX = 'org.mpris.MediaPlayer2.'
-MPRIS2_IFACE = 'org.mpris.MediaPlayer2.Player'
-MPRIS2_PATH = '/org/mpris/MediaPlayer2'
+
 
 def player_info_from_name(name):
     """ Returns a dict representing a player info by the given name
     """
     return PlayerInfo(name, icon=name)
+
 
 class ProxyObject(BasePlayerProxy):
     """ The DBus object for MPRIS2 player proxy
@@ -66,7 +67,7 @@ class ProxyObject(BasePlayerProxy):
                 if name.startswith(MPRIS2_PREFIX)]
 
     def do_list_active_players(self):
-        return self._get_player_from_bus_names(self.connection.list_names());
+        return self._get_player_from_bus_names(self.connection.list_names())
 
     def do_list_supported_players(self):
         return self.do_list_activatable_players()
@@ -79,6 +80,7 @@ class ProxyObject(BasePlayerProxy):
         player = Mpris2Player(self, player_name)
         return player
 
+
 class Mpris2Player(BasePlayer):
     def __init__(self, proxy, player_name):
         super(Mpris2Player, self).__init__(proxy,
@@ -87,19 +89,22 @@ class Mpris2Player(BasePlayer):
         self._seeked_signal = None
         self._name_watch = None
         try:
-            self._player = dbus.Interface(self.connection.get_object(MPRIS2_PREFIX + player_name,
-                                                                     MPRIS2_PATH),
-                                          MPRIS2_IFACE)
             mpris2_object_path = MPRIS2_PREFIX + player_name
-            self._player_prop = dbus.Interface(self.connection.get_object(mpris2_object_path,
-                                                                          MPRIS2_PATH),
-                                               dbus.PROPERTIES_IFACE)
-            self._properties_changed_signal = self._player_prop.connect_to_signal('PropertiesChanged',
-                                                                                  self._player_properties_changed)
-            self._seeked_signal = self._player.connect_to_signal('Seeked',
-                                                                 self._player_seeked)
-            self._name_watch = self.connection.watch_name_owner(mpris2_object_path,
-                                                                self._name_lost)
+            self._player = dbus.Interface(
+                self.connection.get_object(mpris2_object_path,
+                                           MPRIS2_OBJECT_PATH),
+                MPRIS2_PLAYER_INTERFACE)
+            self._player_prop = dbus.Interface(
+                self.connection.get_object(mpris2_object_path,
+                                           MPRIS2_OBJECT_PATH),
+                dbus.PROPERTIES_IFACE)
+            self._properties_changed_signal = (
+                self._player_prop.connect_to_signal(
+                    'PropertiesChanged', self._player_properties_changed))
+            self._seeked_signal = self._player.connect_to_signal(
+                'Seeked', self._player_seeked)
+            self._name_watch = self.connection.watch_name_owner(
+                mpris2_object_path, self._name_lost)
         except:
             self.disconnect()
 
@@ -165,11 +170,14 @@ class Mpris2Player(BasePlayer):
     def set_repeat(self, repeat):
         try:
             if repeat == REPEAT_TRACK:
-                self._player_prop.Set(MPRIS2_IFACE, 'LoopStatus', 'Track')
+                self._player_prop.Set(MPRIS2_PLAYER_INTERFACE, 'LoopStatus',
+                                      'Track')
             elif repeat == REPEAT_ALL:
-                self._player_prop.Set(MPRIS2_IFACE, 'LoopStatus', 'Playlist')
+                self._player_prop.Set(MPRIS2_PLAYER_INTERFACE, 'LoopStatus',
+                                      'Playlist')
             else:
-                self._player_prop.Set(MPRIS2_IFACE, 'LoopStatus', 'None')
+                self._player_prop.Set(MPRIS2_PLAYER_INTERFACE, 'LoopStatus',
+                                      'None')
         except:
             pass
 
@@ -178,7 +186,8 @@ class Mpris2Player(BasePlayer):
                          'Paused': STATUS_PAUSED,
                          'Stopped': STATUS_STOPPED}
         try:
-            return playback_dict[self._player_prop.Get(MPRIS2_IFACE, 'PlaybackStatus')]
+            return playback_dict[self._player_prop.Get(MPRIS2_PLAYER_INTERFACE,
+                                                       'PlaybackStatus')]
         except Exception as e:
             logging.error('Failed to get status: %s' % e)
             return STATUS_PLAYING
@@ -188,18 +197,20 @@ class Mpris2Player(BasePlayer):
                        'Track': REPEAT_TRACK,
                        'Playlist': REPEAT_ALL}
         try:
-            return repeat_dict[self._player_prop.Get(MPRIS2_IFACE, 'LoopStatus')]
+            return repeat_dict[self._player_prop.Get(MPRIS2_PLAYER_INTERFACE,
+                                                     'LoopStatus')]
         except:
             return REPEAT_NONE
 
     def get_shuffle(self):
         try:
-            return True if self._player_prop.Get(MPRIS2_IFACE, 'Shuffle') else False
+            return bool(self._player_prop.Get(MPRIS2_PLAYER_INTERFACE,
+                                              'Shuffle'))
         except:
             return False
 
     def get_metadata(self):
-        metadata = self._player_prop.Get(MPRIS2_IFACE, 'Metadata')
+        metadata = self._player_prop.Get(MPRIS2_PLAYER_INTERFACE, 'Metadata')
         return Metadata.from_mpris2(metadata)
 
     def get_caps(self):
@@ -211,22 +222,25 @@ class Mpris2Player(BasePlayer):
                       'CanSeek': CAPS_SEEK,
             }
         for k, v in caps_dict.items():
-            if self._player_prop.Get(MPRIS2_IFACE, k):
+            if self._player_prop.Get(MPRIS2_PLAYER_INTERFACE, k):
                 caps.add(v)
         return caps
 
     def set_volume(self, volume):
-        self._player_prop.Set(MPRIS2_IFACE, 'Volume', volume)
+        self._player_prop.Set(MPRIS2_PLAYER_INTERFACE, 'Volume', volume)
 
     def get_volume(self):
-        return self._player_prop.Get(MPRIS2_IFACE, 'Volume')
+        return self._player_prop.Get(MPRIS2_PLAYER_INTERFACE, 'Volume')
 
     def set_position(self, time_in_mili):
-        track_id = self._player_prop.Get(MPRIS2_IFACE, 'Metadata')['mpris:trackid']
+        track_id = self._player_prop.Get(
+            MPRIS2_PLAYER_INTERFACE, 'Metadata')['mpris:trackid']
         self._player.SetPosition(track_id, time_in_mili * 1000)
 
     def get_position(self):
-        return self._player_prop.Get(MPRIS2_IFACE, 'Position') / 1000
+        return (self._player_prop.Get(MPRIS2_PLAYER_INTERFACE, 'Position') /
+                1000)
+
 
 def run():
     mpris2 = ProxyObject()
