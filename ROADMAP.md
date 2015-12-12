@@ -88,11 +88,18 @@ After 0.6 is released, it enters maintenance mode and receives only bugfixes in
 0.6.x series. 0.7 development starts, focusing on exciting features, such as
 any drawn from a wish list:
 
-* More eye candy, even though it looks quite good even now. This means smoother
-  graphics (better blur, scrolling) and more modes (multiple lines in OSD?).
+* Prefetch lyrics for the next track by peeking in a playlist.
+
+* Smoother scrolling, improved blur.
+
+* More modes: multiple scrolling lines in OSD?
 
 * Music played on web sites could use lyrics too, so cooperate with web
   browsers -- try to find or implement third-party MPRIS 2.x proxies for them.
   The same applies to streams (radio).
 
-* LRC editor, see e.g. lrcShow-X.
+* LRC editor, see e.g. lrcShow-X, or LRC editing mode. We already can change
+  the global offset by scrolling over the tray icon thanks to Corax26. So how
+  about changing the offset of the current line in lyrics editing mode (either
+  by the scrolling button of even using the mouse to shift the line
+  horizontally)?
