@@ -29,9 +29,8 @@ from osdlyrics.player_proxy import (
     STATUS_PLAYING, STATUS_STOPPED)
 from osdlyrics.metadata import Metadata
 
-PROXY_NAME = 'Mpris1'
+MPRIS1_INTERFACE = 'org.freedesktop.MediaPlayer'
 MPRIS1_PREFIX = 'org.mpris.'
-MPRIS1_IFACE = 'org.freedesktop.MediaPlayer'
 
 MPRIS1_CAN_GO_NEXT           = 1 << 0,
 MPRIS1_CAN_GO_PREV           = 1 << 1,
@@ -100,7 +99,7 @@ class Mpris1Player(BasePlayer):
         try:
             self._player = dbus.Interface(self.connection.get_object(MPRIS1_PREFIX + player_name,
                                                                      '/Player'),
-                                          MPRIS1_IFACE)
+                                          MPRIS1_INTERFACE)
             mpris1_service_name = MPRIS1_PREFIX + player_name
             self._signals.append(self._player.connect_to_signal('TrackChange',
                                                                 self._track_change_cb))

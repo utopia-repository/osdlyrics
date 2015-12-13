@@ -35,8 +35,7 @@ try:
 except ImportError:
     mpd = None
 
-import osdlyrics
-import osdlyrics.consts
+from osdlyrics.consts import PLAYER_PROXY_INTERFACE
 from osdlyrics.metadata import Metadata
 from osdlyrics.player_proxy import (
     BasePlayer, BasePlayerProxy, PlayerInfo, CAPS_NEXT, CAPS_PAUSE, CAPS_PLAY,
@@ -248,7 +247,7 @@ class MpdProxy(BasePlayerProxy):
 
     @dbus.service.method(in_signature='',
                          out_signature='a{sv}',
-                         dbus_interface=osdlyrics.consts.PLAYER_PROXY_INTERFACE)
+                         dbus_interface=PLAYER_PROXY_INTERFACE)
     def DebugInfo(self):
         ret = {}
         ret['host'] = self._host

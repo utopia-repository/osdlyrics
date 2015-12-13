@@ -21,8 +21,13 @@
 import dbus
 import logging
 
-import osdlyrics
 import osdlyrics.config
+from osdlyrics.consts import (LYRIC_SOURCE_PLUGIN_INTERFACE,
+                              LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX)
+
+LYRIC_SOURCE_INTERFACE = 'org.osdlyrics.LyricSource'
+LYRIC_SOURCE_OBJECT_PATH = '/org/osdlyrics/LyricSource'
+LYRIC_SOURCE_PLUGIN_BUS_NAME_PREFIX = 'org.osdlyrics.LyricSourcePlugin.'
 
 STATUS_SUCCESS = 0
 STATUS_CANCELLED = 1
@@ -51,7 +56,7 @@ class LyricSource(dbus.service.Object):
     def __init__(self, conn):
         dbus.service.Object.__init__(self,
                                      conn=conn,
-                                     object_path=osdlyrics.LYRIC_SOURCE_OBJECT_PATH)
+                                     object_path=LYRIC_SOURCE_OBJECT_PATH)
         self._sources = {}
         self._search_tasks = {}
         self._n_search_tickets = 0
@@ -73,10 +78,10 @@ class LyricSource(dbus.service.Object):
                 logging.warning('Fail to connect source %s: %s' % (bus_name, e))
 
     def _connect_source(self, bus_name, activate):
-        if not bus_name.startswith(osdlyrics.LYRIC_SOURCE_PLUGIN_BUS_NAME_PREFIX):
+        if not bus_name.startswith(LYRIC_SOURCE_PLUGIN_BUS_NAME_PREFIX):
             return
         logging.info('Connecting to lyric source %s' % bus_name)
-        source_id = bus_name[len(osdlyrics.LYRIC_SOURCE_PLUGIN_BUS_NAME_PREFIX):]
+        source_id = bus_name[len(LYRIC_SOURCE_PLUGIN_BUS_NAME_PREFIX):]
         if source_id in self._sources:
             return
         if activate:
@@ -85,13 +90,13 @@ class LyricSource(dbus.service.Object):
             except Exception as e:
                 logging.warning('Cannot activate lyric source %s: %s' % (bus_name, e))
                 return
-        path = osdlyrics.LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX + source_id
+        path = LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX + source_id
         proxy = dbus.Interface(self.connection.get_object(bus_name, path),
-                               osdlyrics.LYRIC_SOURCE_PLUGIN_INTERFACE)
+                               LYRIC_SOURCE_PLUGIN_INTERFACE)
         property_iface = dbus.Interface(proxy, 'org.freedesktop.DBus.Properties')
         source = {
             'proxy': proxy,
-            'name': property_iface.Get(osdlyrics.LYRIC_SOURCE_PLUGIN_INTERFACE,
+            'name': property_iface.Get(LYRIC_SOURCE_PLUGIN_INTERFACE,
                                        'Name'),
             'id': source_id,
             'search': {},
@@ -191,24 +196,24 @@ class LyricSource(dbus.service.Object):
             task['ticket'] = newticket
             self.SearchStarted(ticket, nextsource, self._sources[nextsource]['name'])
 
-    @dbus.service.signal(dbus_interface=osdlyrics.LYRIC_SOURCE_INTERFACE,
+    @dbus.service.signal(dbus_interface=LYRIC_SOURCE_INTERFACE,
                          signature='iiaa{sv}')
     def SearchComplete(self, ticket, status, results):
         if ticket in self._search_tasks:
             del self._search_tasks[ticket]
 
-    @dbus.service.signal(dbus_interface=osdlyrics.LYRIC_SOURCE_INTERFACE,
+    @dbus.service.signal(dbus_interface=LYRIC_SOURCE_INTERFACE,
                          signature='iiay')
     def DownloadComplete(self, ticket, status, content):
         if ticket in self._download_tasks:
             del self._download_tasks[ticket]
 
-    @dbus.service.signal(dbus_interface=osdlyrics.LYRIC_SOURCE_INTERFACE,
+    @dbus.service.signal(dbus_interface=LYRIC_SOURCE_INTERFACE,
                          signature='iss')
     def SearchStarted(self, ticket, sourceid, sourcename):
         pass
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRIC_SOURCE_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRIC_SOURCE_INTERFACE,
                          in_signature='a{sv}as',
                          out_signature='i')
     def Search(self, metadata, sources):
@@ -224,7 +229,7 @@ class LyricSource(dbus.service.Object):
         self._do_search(ticket)
         return ticket
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRIC_SOURCE_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRIC_SOURCE_INTERFACE,
                          in_signature='i',
                          out_signature='')
     def CancelSearch(self,ticket):
@@ -235,7 +240,7 @@ class LyricSource(dbus.service.Object):
         sourceid = task['sources'][0]
         self._get_source_proxy(sourceid).CancelSearch(sourceticket)
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRIC_SOURCE_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRIC_SOURCE_INTERFACE,
                          in_signature='sv',
                          out_signature='i')
     def Download(self, source_id, downloaddata):
@@ -253,7 +258,7 @@ class LyricSource(dbus.service.Object):
         self._set_source_download(source_id, sourceticket, ticket)
         return ticket
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRIC_SOURCE_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRIC_SOURCE_INTERFACE,
                          in_signature='i',
                          out_signature='')
     def CancelDownload(self,ticket):
@@ -264,7 +269,7 @@ class LyricSource(dbus.service.Object):
         sourceid = task['source']
         self._get_source_proxy(sourceid).CancelDownload(sourceticket)
 
-    @dbus.service.method(dbus_interface=osdlyrics.LYRIC_SOURCE_INTERFACE,
+    @dbus.service.method(dbus_interface=LYRIC_SOURCE_INTERFACE,
                          in_signature='',
                          out_signature='aa{sv}')
     def ListSources(self):

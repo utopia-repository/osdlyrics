@@ -18,18 +18,17 @@
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import threading
-import dbus
 import logging
+import threading
 
-from consts import \
-    LYRIC_SOURCE_PLUGIN_BUS_NAME_PREFIX, \
-    LYRIC_SOURCE_PLUGIN_INTERFACE, \
-    LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX
-from dbusext.service import Object as DBusObject, property as dbus_property
+import dbus
+
 from app import App
-from metadata import Metadata
 from config import Config
+from consts import (LYRIC_SOURCE_PLUGIN_INTERFACE,
+                    LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX)
+from dbusext.service import Object as DBusObject, property as dbus_property
+from metadata import Metadata
 
 SEARCH_SUCCEED = 0
 SEARCH_CANCELLED = 1
@@ -39,10 +38,7 @@ DOWNLOAD_SUCCEED = 0
 DOWNLOAD_CANCELLED = 1
 DOWNLOAD_FAILED = 2
 
-__all__ = (
-    'BaseLyricSourcePlugin',
-    'SearchResult',
-    )
+
 
 def onmainthread(func):
     def decfunc(self, app, *args, **kwargs):
@@ -51,6 +47,7 @@ def onmainthread(func):
             return False
         app.run_on_main_thread(timeout_cb)
     return decfunc
+
 
 class SearchResult(object):
     """ Lyrics that match the metadata to be searched.
@@ -84,6 +81,7 @@ class SearchResult(object):
                  'comment': self._comment,
                  'sourceid': self._sourceid,
                  'downloadinfo': self._downloadinfo }
+
 
 class BaseTaskThread(threading.Thread):
     """ Base thread for search or download tasks.
@@ -132,6 +130,7 @@ class BaseTaskThread(threading.Thread):
             self._onerror(e)
         import sys
         sys.stdout.flush()
+
 
 class BaseLyricSourcePlugin(DBusObject):
     """ Base class for implementing a lyric source plugin
@@ -309,6 +308,7 @@ class BaseLyricSourcePlugin(DBusObject):
             self._config = Config(self._app.connection)
         return self._config
 
+
 def test():
     class DummyLyricSourcePlugin(BaseLyricSourcePlugin):
         def __init__(self):
@@ -416,6 +416,7 @@ def test():
                     reply_handler=lambda t:download_reply(t, 2),
                     error_handler=dummy_error)
     app.run()
+
 
 if __name__ == '__main__':
     test()

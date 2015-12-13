@@ -25,13 +25,19 @@ import glib
 
 import osdlyrics
 from osdlyrics.app import App
-from osdlyrics.consts import (MPRIS2_PLAYER_INTERFACE, MPRIS2_ROOT_INTERFACE,
-                              MPRIS2_OBJECT_PATH)
+from osdlyrics.consts import (MPRIS2_PLAYER_INTERFACE, MPRIS2_OBJECT_PATH,
+                              PLAYER_PROXY_INTERFACE,
+                              PLAYER_PROXY_OBJECT_PATH_PREFIX)
 from osdlyrics.dbusext.service import (Object as DBusObject,
                                        property as dbus_property)
 import osdlyrics.timer
 
 import config
+
+MPRIS2_ROOT_INTERFACE = 'org.mpris.MediaPlayer2'
+PLAYER_INTERFACE = 'org.osdlyrics.Player'
+PLAYER_OBJECT_PATH = '/org/osdlyrics/Player'
+PLAYER_PROXY_BUS_NAME_PREFIX = 'org.osdlyrics.PlayerProxy.'
 
 
 class PlayerSupport(dbus.service.Object):
@@ -47,7 +53,7 @@ class PlayerSupport(dbus.service.Object):
         """
         dbus.service.Object.__init__(self,
                                      conn=conn,
-                                     object_path=osdlyrics.PLAYER_OBJECT_PATH)
+                                     object_path=PLAYER_OBJECT_PATH)
         self._active_player = None
         self._player_proxies = {}
         self._connect_player_proxies()
@@ -83,10 +89,10 @@ class PlayerSupport(dbus.service.Object):
         return detected
 
     def _connect_proxy(self, bus_name, activate):
-        if not bus_name.startswith(osdlyrics.PLAYER_PROXY_BUS_NAME_PREFIX):
+        if not bus_name.startswith(PLAYER_PROXY_BUS_NAME_PREFIX):
             return
         logging.info('Connecting to player proxy %s', bus_name)
-        proxy_name = bus_name[len(osdlyrics.PLAYER_PROXY_BUS_NAME_PREFIX):]
+        proxy_name = bus_name[len(PLAYER_PROXY_BUS_NAME_PREFIX):]
         if activate:
             try:
                 self.connection.activate_name_owner(bus_name)
@@ -134,14 +140,15 @@ class PlayerSupport(dbus.service.Object):
             self._start_detect_player()
 
     def _proxy_name_changed(self, proxy_name, lost):
-        bus_name = osdlyrics.PLAYER_PROXY_BUS_NAME_PREFIX + proxy_name
+        bus_name = PLAYER_PROXY_BUS_NAME_PREFIX + proxy_name
         if not lost:
             logging.info('Get player proxy %s' % proxy_name)
-            proxy = self.connection.get_object(bus_name,
-                                               osdlyrics.PLAYER_PROXY_OBJECT_PATH_PREFIX + proxy_name)
+            proxy = self.connection.get_object(
+                bus_name, PLAYER_PROXY_OBJECT_PATH_PREFIX + proxy_name)
             proxy.connect_to_signal('PlayerLost',
                                     self._player_lost_cb)
-            self._player_proxies[proxy_name] = dbus.Interface(proxy, osdlyrics.PLAYER_PROXY_INTERFACE)
+            self._player_proxies[proxy_name] = dbus.Interface(
+                proxy, PLAYER_PROXY_INTERFACE)
         else:
             if not proxy_name in self._player_proxies:
                 return
@@ -157,7 +164,7 @@ class PlayerSupport(dbus.service.Object):
             except:
                 pass
 
-    @dbus.service.method(dbus_interface=osdlyrics.PLAYER_INTERFACE,
+    @dbus.service.method(dbus_interface=PLAYER_INTERFACE,
                          in_signature='',
                          out_signature='aa{sv}')
     def ListSupportedPlayers(self):
@@ -169,7 +176,7 @@ class PlayerSupport(dbus.service.Object):
                 pass
         return ret
 
-    @dbus.service.method(dbus_interface=osdlyrics.PLAYER_INTERFACE,
+    @dbus.service.method(dbus_interface=PLAYER_INTERFACE,
                          in_signature='',
                          out_signature='aa{sv}')
     def ListActivatablePlayers(self):
@@ -181,7 +188,7 @@ class PlayerSupport(dbus.service.Object):
                 pass
         return ret
 
-    @dbus.service.method(dbus_interface=osdlyrics.PLAYER_INTERFACE,
+    @dbus.service.method(dbus_interface=PLAYER_INTERFACE,
                          in_signature='',
                          out_signature='ba{sv}')
     def GetCurrentPlayer(self):
@@ -189,12 +196,12 @@ class PlayerSupport(dbus.service.Object):
             return False, {}
         return True, self._active_player['info']
 
-    @dbus.service.signal(dbus_interface=osdlyrics.PLAYER_INTERFACE,
+    @dbus.service.signal(dbus_interface=PLAYER_INTERFACE,
                          signature='')
     def PlayerLost(self):
         pass
 
-    @dbus.service.signal(dbus_interface=osdlyrics.PLAYER_INTERFACE,
+    @dbus.service.signal(dbus_interface=PLAYER_INTERFACE,
                          signature='a{sv}')
     def PlayerConnected(self, player_info):
         pass
