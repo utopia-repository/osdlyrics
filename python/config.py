@@ -22,7 +22,7 @@ import logging
 
 import dbus
 
-from consts import CONFIG_BUS_NAME, CONFIG_OBJECT_PATH
+from .consts import CONFIG_BUS_NAME, CONFIG_OBJECT_PATH
 
 CONFIG_INTERFACE = 'org.osdlyrics.Config'
 

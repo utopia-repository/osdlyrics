@@ -19,13 +19,14 @@
 #/
 
 import logging
+import xml.etree.ElementTree as xet
+
 import dbus
 import dbus.exceptions
 import dbus.service
-import xml.etree.ElementTree as xet
 import glib
 
-from property import Property
+from .property import Property
 
 
 class ObjectTypeCls(dbus.service.Object.__class__):

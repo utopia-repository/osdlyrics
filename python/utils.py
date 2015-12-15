@@ -21,11 +21,12 @@
 import os
 import os.path
 import stat
-import urllib
-import pycurl
 import StringIO
 import sys
+import urllib
 import urlparse
+
+import pycurl
 
 __all__ = (
     'cmd_exists',

@@ -27,7 +27,7 @@ import dbus.service
 import glib
 import gobject
 
-from consts import DAEMON_BUS_NAME
+from .consts import DAEMON_BUS_NAME
 
 APP_BUS_PREFIX = 'org.osdlyrics.'
 

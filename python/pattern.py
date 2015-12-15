@@ -18,10 +18,11 @@
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import urlparse
-import urllib
 import os.path
-from errors import PatternException
+import urllib
+import urlparse
+
+from .errors import PatternException
 
 def expand_file(pattern, metadata):
     """
