@@ -23,12 +23,12 @@ import threading
 
 import dbus
 
-from app import App
-from config import Config
-from consts import (LYRIC_SOURCE_PLUGIN_INTERFACE,
-                    LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX)
-from dbusext.service import Object as DBusObject, property as dbus_property
-from metadata import Metadata
+from .app import App
+from .config import Config
+from .consts import (LYRIC_SOURCE_PLUGIN_INTERFACE,
+                     LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX)
+from .dbusext.service import Object as DBusObject, property as dbus_property
+from .metadata import Metadata
 
 SEARCH_SUCCEED = 0
 SEARCH_CANCELLED = 1

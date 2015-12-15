@@ -23,7 +23,7 @@ import re
 
 import dbus
 
-import utils
+from . import utils
 
 class Metadata(object):
     """

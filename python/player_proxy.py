@@ -23,13 +23,13 @@ import logging
 import dbus
 import dbus.service
 
-from app import App
-from consts import (MPRIS2_PLAYER_INTERFACE, PLAYER_PROXY_INTERFACE,
-                    PLAYER_PROXY_OBJECT_PATH_PREFIX)
-from dbusext.service import Object as DBusObject, property as dbus_property
-import errors
-import timer
-import utils
+from .app import App
+from .consts import (MPRIS2_PLAYER_INTERFACE, PLAYER_PROXY_INTERFACE,
+                     PLAYER_PROXY_OBJECT_PATH_PREFIX)
+from .dbusext.service import Object as DBusObject, property as dbus_property
+from . import errors
+from . import timer
+from . import utils
 
 class ConnectPlayerError(errors.BaseError):
     """
