@@ -20,7 +20,14 @@ bugfixes. See below for 0.6 release criteria.
 
 ### Iron out some known bugs
 
-* OSD panel is not click-through when the panel is initialized in 'Locked'
+* The following bug could simply stop manifesting itself under GTK 3, but there
+  is so far no decision on changing the toolkit.
+
+  In the meantime, we could introduce a temporary switch to start the panel in
+  unlocked mode, so to get it locked properly, one would only have to change
+  the mode once. The bug description follows:
+
+  OSD panel is not click-through when the panel is initialized in 'Locked'
   mode. Switching the mode back and forth fixes that. But the problem comes
   back when the panel is supposedly destroyed and then recreated by switching
   to windowed mode and back to OSD mode.
@@ -72,6 +79,8 @@ When the button is released:
 
 ### Nice things to have
 
+* Definitely merge fixes and translations from the legacy post-0.4.3 branch.
+
 * Extended LRC format is not handled at all currently. <mm:ss.ms> timestamps
   should now be either plain removed, or tokenized but not shown. An example:
 
@@ -107,12 +116,17 @@ any drawn from a wish list:
 
 * More modes: multiple scrolling lines in OSD?
 
+* Reading/writing of embedded lyrics (e.g. SYLT ID3v2.x tag).
+
 * Music played on web sites could use lyrics too, so cooperate with web
   browsers -- try to find or implement third-party MPRIS 2.x proxies for them.
   The same applies to streams (radio).
 
-* LRC editor, see e.g. lrcShow-X, or LRC editing mode. We already can change
+* LRC editor, see e.g. lrcShow-X, or LRC editing mode. We can already change
   the global offset by scrolling over the tray icon thanks to Corax26. So how
   about changing the offset of the current line in lyrics editing mode (either
   by the scrolling button of even using the mouse to shift the line
   horizontally)?
+
+* Allow uploading to supported services. If feasible, this could also be some
+  sort of a Git repository.
