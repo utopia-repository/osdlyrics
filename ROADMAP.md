@@ -20,14 +20,20 @@ bugfixes. See below for 0.6 release criteria.
 
 ### Iron out some known bugs
 
-* The following bug could simply stop manifesting itself under GTK 3, but there
-  is so far no decision on changing the toolkit.
+* Crash in Cairo with a Japanese character
 
-  In the meantime, we could introduce a temporary switch to start the panel in
-  unlocked mode, so to get it locked properly, one would only have to change
-  the mode once. The bug description follows:
+  This LRC file (UTF-8 BOM advised) causes an assertion error in Cairo:
 
-  OSD panel is not click-through when the panel is initialized in 'Locked'
+  `[00:00.00]ず`
+
+  ```
+  osdlyrics: cairo-scaled-font.c:459: _cairo_scaled_glyph_page_destroy:
+  Assertion !scaled_font->cache_frozen failed.
+  ```
+
+  The full stack trace is at https://github.com/PedroHLC/osdlyrics/issues/34
+
+* OSD panel is not click-through when the panel is initialized in 'Locked'
   mode. Switching the mode back and forth fixes that. But the problem comes
   back when the panel is supposedly destroyed and then recreated by switching
   to windowed mode and back to OSD mode.
@@ -47,10 +53,12 @@ When the button is released:
 (OSD Lyrics:8291): GLib-GObject-CRITICAL **: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
 ```
 
-* Some lyrics (with Chinese characters, I think) cause a crash in Cairo:
+  This bug could simply stop manifesting itself under GTK+ 3, but there is so
+  far no decision on changing the toolkit.
 
-  `osdlyrics: cairo-scaled-font.c:459: _cairo_scaled_glyph_page_destroy:`
-  `Assertion !scaled_font->cache_frozen failed.`
+  In the meantime, we could introduce a temporary switch to start the panel in
+  unlocked mode, so to get it locked properly, one would only have to change
+  the mode once. The bug description follows:
 
 ### Communicate with players flawlessly
 
@@ -59,7 +67,7 @@ When the button is released:
 
 * I couldn't get MPRIS 2.x to work well with VLC or Audacious.
 
-* MPD proxy needs to be tested (at all).
+* MPD proxy needs to be tested (to see if it works at all).
 
 * What is this HTTP controller supposed to do?
 
