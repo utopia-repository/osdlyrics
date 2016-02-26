@@ -40,18 +40,18 @@ bugfixes. See below for 0.6 release criteria.
   The following GTK errors (from deep inside the library) appear when the panel
   is clicked when in this troubled state:
 
-When a mouse button is pressed:
+  When a mouse button is pressed:
 
-```
-(OSD Lyrics:8291): Gdk-CRITICAL **: IA__gdk_window_get_events: assertion 'GDK_IS_WINDOW (window)' failed
-(OSD Lyrics:8291): GLib-GObject-CRITICAL **: g_object_ref: assertion 'G_IS_OBJECT (object)' failed
-```
+  ```
+  (OSD Lyrics:8291): Gdk-CRITICAL **: IA__gdk_window_get_events: assertion 'GDK_IS_WINDOW (window)' failed
+  (OSD Lyrics:8291): GLib-GObject-CRITICAL **: g_object_ref: assertion 'G_IS_OBJECT (object)' failed
+  ```
 
-When the button is released:
+  When the button is released:
 
-```
-(OSD Lyrics:8291): GLib-GObject-CRITICAL **: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
-```
+  ```
+  (OSD Lyrics:8291): GLib-GObject-CRITICAL **: g_object_unref: assertion 'G_IS_OBJECT (object)' failed
+  ```
 
   This bug could simply stop manifesting itself under GTK+ 3, but there is so
   far no decision on changing the toolkit.
