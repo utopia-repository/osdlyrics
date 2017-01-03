@@ -21,6 +21,7 @@
 #include <gtk/gtk.h>
 #include "ol_lrc_fetch.h"
 #include "string.h"
+#include "ol_lrc_fetch_viewlyric.h"
 #include "ol_lrc_fetch_xiami.h"
 #include "ol_lrc_fetch_ttplayer.h"
 #include "ol_utils.h"
@@ -89,6 +90,7 @@ ol_lrc_fetch_init ()
 {
   ol_lrc_fetch_add_engine (ol_lrc_fetch_xiami_engine ());
   ol_lrc_fetch_add_engine (ol_lrc_fetch_ttplayer_engine ());
+  ol_lrc_fetch_add_engine (ol_lrc_fetch_viewlyric_engine ());
 }
 
 static int

@@ -3,13 +3,13 @@
 m4_define([OL_MAJOR_VER], [0])
 m4_define([OL_MINOR_VER], [4])
 m4_define([OL_MICRO_VER], [3])
-m4_define([OL_BUILD], [-git])
+m4_define([OL_BUILD], [])
 m4_define(OL_BUILD_VER,
           m4_esyscmd([if test x]OL_BUILD[ == x-git; then git log -1 --format=format:%ad --date=short | sed 's/-//g'; fi]))
 
 m4_define([OL_VERSION], [OL_MAJOR_VER.OL_MINOR_VER.OL_MICRO_VER[]OL_BUILD[]OL_BUILD_VER])
 AC_INIT([osdlyrics], [OL_VERSION], [http://code.google.com/p/osd-lyrics/issues/list])
-AM_INIT_AUTOMAKE([-Wall -Werror subdir-objects])
+AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror])
 AC_CONFIG_SRCDIR([src/ol_main.c])
 AC_CONFIG_HEADERS([config.h])
 AC_DEFINE([PROGRAM_NAME], ["OSD Lyrics"], [The full name of the program to display])
@@ -60,7 +60,7 @@ AC_SUBST(OL_GUIDIR)
 
 # gprof support
 AC_ARG_WITH(gprof-support,
-[  --with-gprof-support=DIR   Include gmon.out file renaming support 
+[  --with-gprof-support=DIR   Include gmon.out file renaming support
   --without-gprof-support    Don't do gmon.out file renaming (default)],
 [ case "$withval" in
   yes)
@@ -129,8 +129,8 @@ AS_IF([test "x$enable_amarok1" != xno],
 
 # Checks for libraries.
 AC_CHECK_LIB([dl], [exp])
-PKG_CHECK_MODULES([GTK2], [gtk+-2.0 >= 2.20.0, 
-                          gthread-2.0, 
+PKG_CHECK_MODULES([GTK2], [gtk+-2.0 >= 2.20.0,
+                          gthread-2.0,
                           gmodule-export-2.0,
                           gio-2.0,
                           gio-unix-2.0])
@@ -138,7 +138,7 @@ PKG_CHECK_MODULES([X11], [x11])   dnl For XGrabKey
 PKG_CHECK_MODULES([DBUS_GLIB], [dbus-glib-1])
 PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([NOTIFY], [libnotify])
-PKG_CHECK_EXISTS([libnotify >= 0.7], 
+PKG_CHECK_EXISTS([libnotify >= 0.7],
   AC_DEFINE(HAVE_LIBNOTIFY_0_7, 1, [Have libnotify >= 0.7]))
 
 PKG_CHECK_MODULES([SQLITE], [sqlite3 >= 3.3.0])
