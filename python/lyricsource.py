@@ -3,7 +3,7 @@
 # Copyright (C) 2012 Tiger Soldier <tigersoldi@gmail.com>
 #
 # This file is part of OSD Lyrics.
-# 
+#
 # OSD Lyrics is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -15,23 +15,20 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
-#/
+# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
+#
 
-import threading
-import dbus
 import logging
+import threading
 
-from consts import \
-    LYRIC_SOURCE_PLUGIN_BUS_NAME_PREFIX, \
-    LYRIC_SOURCE_PLUGIN_INTERFACE, \
-    LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX
-from dbusext import Object as DBusObject
-from dbusext import property as dbusproperty
-from app import App
-from utils import ensure_utf8
-from metadata import Metadata
-from config import Config
+import dbus
+
+from .app import App
+from .config import Config
+from .consts import (LYRIC_SOURCE_PLUGIN_INTERFACE,
+                     LYRIC_SOURCE_PLUGIN_OBJECT_PATH_PREFIX)
+from .dbusext.service import Object as DBusObject, property as dbus_property
+from .metadata import Metadata
 
 SEARCH_SUCCEED = 0
 SEARCH_CANCELLED = 1
@@ -41,10 +38,7 @@ DOWNLOAD_SUCCEED = 0
 DOWNLOAD_CANCELLED = 1
 DOWNLOAD_FAILED = 2
 
-__all__ = (
-    'BaseLyricSourcePlugin',
-    'SearchResult',
-    )
+
 
 def onmainthread(func):
     def decfunc(self, app, *args, **kwargs):
@@ -54,12 +48,13 @@ def onmainthread(func):
         app.run_on_main_thread(timeout_cb)
     return decfunc
 
+
 class SearchResult(object):
     """ Lyrics that match the metadata to be searched.
     """
     def __init__(self, sourceid, downloadinfo, title='', artist='', album='', comment=''):
         """
-        
+
         Arguments:
         - `title`: The matched lyric title.
         - `artist`: The matched lyric artist.
@@ -86,6 +81,7 @@ class SearchResult(object):
                  'comment': self._comment,
                  'sourceid': self._sourceid,
                  'downloadinfo': self._downloadinfo }
+
 
 class BaseTaskThread(threading.Thread):
     """ Base thread for search or download tasks.
@@ -129,11 +125,12 @@ class BaseTaskThread(threading.Thread):
         try:
             ret = self._target(*self._args, **self._kwargs)
             self._onfinish(ret)
-        except Exception,e:
+        except Exception as e:
             logging.exception('Got exception in thread')
             self._onerror(e)
         import sys
         sys.stdout.flush()
+
 
 class BaseLyricSourcePlugin(DBusObject):
     """ Base class for implementing a lyric source plugin
@@ -141,7 +138,7 @@ class BaseLyricSourcePlugin(DBusObject):
 
     def __init__(self, id, name=None, watch_daemon=True):
         """
-        Create a new lyric source instance. 
+        Create a new lyric source instance.
 
         Arguments:
 
@@ -227,7 +224,7 @@ class BaseLyricSourcePlugin(DBusObject):
         Parameters:
 
         - `downloadinfo`: The additional info taken from `downloadinfo` field in
-          SearchResult objects. 
+          SearchResult objects.
 
         Returns: A string of the lyric content
         """
@@ -267,7 +264,7 @@ class BaseLyricSourcePlugin(DBusObject):
             del self._download_tasks[ticket]
             self.DownloadComplete(ticket, DOWNLOAD_CANCELLED, '')
 
-    @dbusproperty(dbus_interface=LYRIC_SOURCE_PLUGIN_INTERFACE,
+    @dbus_property(dbus_interface=LYRIC_SOURCE_PLUGIN_INTERFACE,
                   type_signature='s')
     def Name(self):
         return self._name
@@ -277,8 +274,8 @@ class BaseLyricSourcePlugin(DBusObject):
     def SearchComplete(self, ticket, status, results):
         logging.debug('search complete: ticket: %d, status: %d' % (ticket, status))
         pass
-        
-    
+
+
     @dbus.service.signal(dbus_interface=LYRIC_SOURCE_PLUGIN_INTERFACE,
                          signature='iiay')
     def DownloadComplete(self, ticket, status, result):
@@ -310,6 +307,7 @@ class BaseLyricSourcePlugin(DBusObject):
         if self._config is None:
             self._config = Config(self._app.connection)
         return self._config
+
 
 def test():
     class DummyLyricSourcePlugin(BaseLyricSourcePlugin):
@@ -343,20 +341,20 @@ def test():
 
     def search_reply(ticket, expect_status):
         if ticket in search_tickets:
-            print 'Error: search ticket %d exists' % ticket
+            logging.warning('Error: search ticket %d exists', ticket)
         else:
             search_tickets[ticket] = expect_status
 
     def search_complete_cb(ticket, status, results):
         if ticket not in search_tickets:
-            print 'Error! search ticket not exists'
+            logging.warning('Error! search ticket not exists')
             return
 
         if search_tickets[ticket] != status:
-            print 'Error! expect search %d with status %d but %d got' % \
-                (ticket, search_tickets[ticket], status)
+            logging.warning('Error! expect search %d with status %d but %d got',
+                            ticket, search_tickets[ticket], status)
             return
-        print 'Search #%d with status %d' % (ticket, status)
+        logging.debug('Search #%d with status %d', ticket, status)
         if status == 0:
             downloadinfo = results[0]['downloadinfo']
             source.Download(downloadinfo,
@@ -367,24 +365,23 @@ def test():
 
     def download_reply(ticket, expect_status):
         if ticket in download_tickets:
-            print 'Error: download ticket %d already exists' % ticket
+            logging.warning('Error: download ticket %d already exists', ticket)
         else:
             download_tickets[ticket] = expect_status
 
     def download_complete_cb(ticket, status, content):
         if ticket not in download_tickets:
-            print 'Error! download ticket not exists'
+            logging.warning('Error! download ticket not exists')
             return
 
         if download_tickets[ticket] != status:
-            print 'Error! expect download status %d but %d got' % \
-                (download_tickets[ticket], status)
+            logging.warning('Error! expect download status %d but %d got', download_tickets[ticket], status)
             return
         if status == 0:
-            print 'Download #%d success' % ticket
-            print 'Downloaded content: \n%s' % ''.join([chr(b) for b in content])
+            logging.debug('Download #%d success', ticket)
+            logging.debug('Downloaded content: \n%s', ''.join([chr(b) for b in content]))
         else:
-            print 'Download #%d fail, msg: %s' % (ticket, ''.join([chr(b) for b in content]))
+            logging.warning('Download #%d fail, msg: %s', ticket, ''.join([chr(b) for b in content]))
         del download_tickets[ticket]
         check_quit()
 
@@ -396,7 +393,7 @@ def test():
             app.quit()
 
     def dummy_error(e):
-        print 'Error: ' + e
+        logging.warning('Error: ' + e)
 
     dummysource = DummyLyricSourcePlugin()
     app = dummysource.app
@@ -419,6 +416,7 @@ def test():
                     reply_handler=lambda t:download_reply(t, 2),
                     error_handler=dummy_error)
     app.run()
+
 
 if __name__ == '__main__':
     test()

@@ -16,21 +16,21 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
-#/
+#
 
 from optparse import OptionParser
+
+import dbus
+import dbus.mainloop.glib
+from dbus.mainloop.glib import DBusGMainLoop
+import dbus.service
 import glib
 import gobject
-import dbus
-import dbus.service
-import consts
-from dbus.mainloop.glib import DBusGMainLoop
-import dbus.mainloop.glib
 
-__all__ = (
-    'AlreadyRunningException',
-    'App',
-    )
+from .consts import DAEMON_BUS_NAME
+
+APP_BUS_PREFIX = 'org.osdlyrics.'
+
 
 gobject.threads_init()
 dbus.mainloop.glib.threads_init()
@@ -54,7 +54,7 @@ class App(object):
     To create an component application owning the bus name ``org.osdlyrics.MyApp``,
     just simply follow the code below:
 
-      app = osdlyrics.App('MyApp')
+      app = App('MyApp')
       app.run()
     """
 
@@ -65,8 +65,8 @@ class App(object):
         - `name`: The suffix of the bus name. The full bus name is
           `org.osdlyrics.` + name
         - `watch_daemon`: Whether to watch daemon bus
-        - `singleton`: If True, raise AlreadyRunningException if the bus name already
-                       has an owner.
+        - `singleton`: If True, raise AlreadyRunningException if the bus name
+                       already has an owner.
         """
         self._name = name
         self._namewatch = None
@@ -75,10 +75,12 @@ class App(object):
         self._conn = dbus.SessionBus(mainloop=DBusGMainLoop())
         self._bus_names = []
         try:
-            self.request_bus_name(consts.APP_BUS_PREFIX + name,
+            self.request_bus_name(APP_BUS_PREFIX + name,
                                   singleton)
         except dbus.NameExistsException:
-            raise AlreadyRunningException('Process with bus name %s is already running' % consts.APP_BUS_PREFIX + name)
+            raise AlreadyRunningException(
+                'Process with bus name %s is already running' % (
+                    APP_BUS_PREFIX + name))
         self._parse_options()
 
     def _parse_options(self):
@@ -86,11 +88,11 @@ class App(object):
         parser.add_option('-w', '--watch-daemon',
                           dest='watch_daemon',
                           action='store',
-                          default=consts.BUS_NAME,
-                          metavar='BUS_NAME',
-                          help='A well-known bus name on DBus. Exit when the ' \
-                          'name disappears. If set to empty string, this player ' \
-                          'proxy will not exit.')
+                          default=DAEMON_BUS_NAME,
+                          metavar='DAEMON_BUS_NAME',
+                          help=('A well-known bus name on DBus. Exit when the'
+                                ' name disappears. If set to empty string,'
+                                ' this player proxy will not exit.'))
         (options, args) = parser.parse_args()
         if self._watch_daemon:
             self._watch_daemon_bus(options.watch_daemon)

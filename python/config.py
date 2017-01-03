@@ -3,7 +3,7 @@
 # Copyright (C) 2011  Tiger Soldier
 #
 # This file is part of OSD Lyrics.
-# 
+#
 # OSD Lyrics is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -15,12 +15,17 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>. 
-#/
+# along with OSD Lyrics.  If not, see <http://www.gnu.org/licenses/>.
+#
 
-import consts
 import logging
+
 import dbus
+
+from .consts import CONFIG_BUS_NAME, CONFIG_OBJECT_PATH
+
+CONFIG_INTERFACE = 'org.osdlyrics.Config'
+
 
 class Config(object):
     """ Helper class to retrive configs from OSD Lyrics through DBus
@@ -32,18 +37,18 @@ class Config(object):
 
     Values can be monitored by connect_change function.
     """
-    
+
     def __init__(self, conn, follow_name_owner_changes=True):
         """
         Arguments:
         - `conn`: DBus connection
         """
         self._conn = conn
-        self._proxy = conn.get_object(consts.CONFIG_BUS_NAME,
-                                      consts.CONFIG_OBJECT_PATH,
+        self._proxy = conn.get_object(CONFIG_BUS_NAME,
+                                      CONFIG_OBJECT_PATH,
                                       follow_name_owner_changes=follow_name_owner_changes)
         self._proxy = dbus.Interface(self._proxy,
-                                     consts.CONFIG_INTERFACE)
+                                     CONFIG_INTERFACE)
         self._signals = {}
         self._proxy.connect_to_signal('ValueChanged',
                                       self._value_changed_cb)
@@ -51,7 +56,7 @@ class Config(object):
     def get_bool(self, key, default=None):
         try:
             return self._proxy.GetBool(key)
-        except Exception, e:
+        except Exception as e:
             if default is not None:
                 try:
                     self._proxy.SetBool(key, default)
@@ -66,7 +71,7 @@ class Config(object):
     def get_int(self, key, default=None):
         try:
             return self._proxy.GetInt(key)
-        except Exception, e:
+        except Exception as e:
             if default is not None:
                 try:
                     self._proxy.SetInt(key, default)
@@ -81,7 +86,7 @@ class Config(object):
     def get_double(self, key, default=None):
         try:
             return self._proxy.GetDouble(key)
-        except Exception, e:
+        except Exception as e:
             if default is not None:
                 try:
                     self._proxy.SetBool(key, default)
@@ -96,7 +101,7 @@ class Config(object):
     def get_string(self, key, default=None):
         try:
             return self._proxy.GetString(key)
-        except Exception, e:
+        except Exception as e:
             if default is not None:
                 try:
                     self._proxy.SetString(key, default)
@@ -111,7 +116,7 @@ class Config(object):
     def get_string_list(self, key, default=None):
         try:
             return self._proxy.GetStringList(key)
-        except Exception, e:
+        except Exception as e:
             if default is not None:
                 try:
                     self._proxy.SetStringList(key, default)
@@ -155,7 +160,7 @@ def test():
         typename = name.split('/')[1]
         logging.debug('%s has been changed to %s' % (name,
                                                      getattr(config, 'get_' + typename)(name)))
-    
+
     import glib
     from dbus.mainloop.glib import DBusGMainLoop
     loop = glib.MainLoop()
