@@ -58,8 +58,10 @@ class ProxyObject(BasePlayerProxy):
         Arguments:
         - `names`: list of bus names
         """
-        return [player_info_from_name(name[len(MPRIS2_PREFIX):]) for name in names
-                if name.startswith(MPRIS2_PREFIX)]
+        return [player_info_from_name(name[len(MPRIS2_PREFIX):])
+                for name in names if name.startswith(MPRIS2_PREFIX) and
+                # skip self: APP_MPRIS2_NAME (in daemon/main.py)
+                not name.endswith('osdlyrics')]
 
     def do_list_active_players(self):
         return self._get_player_from_bus_names(self.connection.list_names())
