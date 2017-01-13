@@ -24,17 +24,14 @@ import dbus
 
 from osdlyrics.app import AlreadyRunningException, App
 from osdlyrics.consts import (CONFIG_BUS_NAME, DAEMON_BUS_NAME,
-                              MPRIS2_OBJECT_PATH)
+                              DAEMON_INTERFACE, DAEMON_MPRIS2_NAME,
+                              DAEMON_OBJECT_PATH, MPRIS2_OBJECT_PATH)
 from osdlyrics.metadata import Metadata
 
 import config
 import lyrics
 import lyricsource
 import player
-
-APP_MPRIS2_NAME = 'org.mpris.MediaPlayer2.osdlyrics'
-DAEMON_INTERFACE = 'org.osdlyrics.Daemon'
-DAEMON_OBJECT_PATH = '/org/osdlyrics/Daemon'
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -57,7 +54,7 @@ class MainApp(App):
         self._lyrics = lyrics.LyricsService(self.connection)
         self._connect_metadata_signal()
         self._activate_config()
-        self.request_bus_name(APP_MPRIS2_NAME)
+        self.request_bus_name(DAEMON_MPRIS2_NAME)
         self._daemon_object = DaemonObject(self)
         self._lyricsource = lyricsource.LyricSource(self.connection)
         self._lyrics.set_current_metadata(Metadata.from_dict(self._player.current_player.Metadata))
