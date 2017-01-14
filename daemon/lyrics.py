@@ -24,6 +24,7 @@ import os.path
 import re
 import urllib
 import urlparse
+import sys
 
 import dbus
 import dbus.service
@@ -91,6 +92,14 @@ def metadata_description(metadata):
     else:
         return '[Unknown]'
 
+
+# TODO: remove once we have fully migrated to Python 3
+if sys.version_info >= (3, 0):
+    UNICODE_TYPE = str
+else:
+    UNICODE_TYPE = unicode
+
+
 def decode_by_charset(content):
     r"""
     Detect the charset encoding of a string and decodes to unicode strings.
@@ -100,7 +109,7 @@ def decode_by_charset(content):
     >>> decode_by_charset(u'\u4e2d\u6587'.encode('HZ-GB-2312'))
     u'\u4e2d\u6587'
     """
-    if not isinstance(content, str):
+    if isinstance(content, UNICODE_TYPE):
         return content
     encoding = chardet.detect(content)['encoding']
     # Sometimes, the content is well encoded but the last few bytes. This is
