@@ -118,7 +118,7 @@ if sys.version_info < (3, 0):
         r"""
         If value is a unicode, encode with utf-8. Otherwise return it directly.
         """
-        if isinstance(value, str):
+        if isinstance(value, unicode):
             return value.encode('utf8')
         return value
 else:
