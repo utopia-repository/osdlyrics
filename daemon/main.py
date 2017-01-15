@@ -35,6 +35,7 @@ import player
 
 logging.basicConfig(level=logging.WARNING)
 
+
 class InvalidClientNameException(Exception):
     """ The client bus name in Hello is invalid
     """
@@ -47,6 +48,7 @@ class InvalidClientNameException(Exception):
         """
         Exception.__init__(self, 'Client bus name %s is invalid' % name)
 
+
 class MainApp(App):
     def __init__(self, ):
         App.__init__(self, 'Daemon', False)
@@ -57,13 +59,14 @@ class MainApp(App):
         self.request_bus_name(DAEMON_MPRIS2_NAME)
         self._daemon_object = DaemonObject(self)
         self._lyricsource = lyricsource.LyricSource(self.connection)
-        self._lyrics.set_current_metadata(Metadata.from_dict(self._player.current_player.Metadata))
+        self._lyrics.set_current_metadata(Metadata.from_dict(
+            self._player.current_player.Metadata))
 
     def _connect_metadata_signal(self, ):
         self._mpris_proxy = self.connection.get_object(DAEMON_BUS_NAME,
                                                        MPRIS2_OBJECT_PATH)
-        self._metadata_signal = self._mpris_proxy.connect_to_signal('PropertiesChanged',
-                                                                    self._player_properties_changed)
+        self._metadata_signal = self._mpris_proxy.connect_to_signal(
+            'PropertiesChanged', self._player_properties_changed)
 
     def _activate_config(self, ):
         try:
@@ -73,7 +76,9 @@ class MainApp(App):
 
     def _player_properties_changed(self, iface, changed, invalidated):
         if 'Metadata' in changed:
-            self._lyrics.set_current_metadata(Metadata.from_dict(changed['Metadata']))
+            self._lyrics.set_current_metadata(Metadata.from_dict(
+                changed['Metadata']))
+
 
 def is_valid_client_bus_name(name):
     """Check if a client bus name is valid.
@@ -103,10 +108,12 @@ class DaemonObject(dbus.service.Object):
     def Hello(self, client_bus_name):
         logging.info('A new client connected: %s' % client_bus_name)
         if is_valid_client_bus_name(client_bus_name):
-            if not client_bus_name in self._watch_clients:
-                self._watch_clients[client_bus_name] = self.connection.watch_name_owner(
-                    client_bus_name,
-                    lambda owner: self._client_owner_changed(client_bus_name, owner))
+            if client_bus_name not in self._watch_clients:
+                self._watch_clients[client_bus_name] = \
+                    self.connection.watch_name_owner(
+                        client_bus_name,
+                        lambda owner: self._client_owner_changed(
+                            client_bus_name, owner))
         else:
             raise InvalidClientNameException(client_bus_name)
 
@@ -132,12 +139,14 @@ class DaemonObject(dbus.service.Object):
                 logging.info('All client disconnected, quit the daemon')
                 self._app.quit()
 
+
 def main():
     try:
         app = MainApp()
         app.run()
     except AlreadyRunningException:
-        print 'OSD Lyrics is running'
+        print('OSD Lyrics is running')
+
 
 if __name__ == '__main__':
     main()
