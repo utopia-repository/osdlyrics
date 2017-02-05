@@ -1,3 +1,23 @@
+osdlyrics (0.5~git20170115~dfc4391-0utopia1) experimental; urgency=low
+
+  * Utopia Repository build, based off the old PPA sources at
+    https://launchpad.net/~osd-lyrics/+archive/ubuntu/ppa/+packages
+  * New upstream Git snapshot.
+  * Refreshed packaging:
+    - Refresh debian/copyright (years and homepage).
+    - Update to debhelper 10 and simplified debian/rules.
+    - Set myself as maintainer.
+    - Rewrite long description to reflect currently supported sites/players.
+    - Dependency updates: Use "libcurl4-gnutls-dev | libcurl4-nss-dev |
+      libcurl4-openssl-dev" instead of "libcurl3-dev | libcurl4-dev" (which
+      is no longer available).
+    - Bump standards version to 3.9.8.
+    - Make the package non-native.
+    - Add patch fix-build-errors to fuild FTBFS with -Werror
+      due to deprecated declarations and unused variables.
+
+ -- James Lu <bitflip3@gmail.com>  Sat, 04 Feb 2017 23:44:56 -0800
+
 osdlyrics (0.4.3-1~precise1) precise; urgency=low
 
   * Player support:

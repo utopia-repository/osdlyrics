@@ -1,37 +1,43 @@
 Source: osdlyrics
 Section: x11
 Priority: optional
-Maintainer: TualatriX <tualatrix@gmail.com>
-Build-Depends: debhelper,
+Maintainer: James Lu <bitflip3@gmail.com>
+Build-Depends: autotools-dev,
+               debhelper (>= 10),
                intltool,
-               autotools-dev,
-               libtool,
-               libgtk2.0-dev,
+               libappindicator-dev,
+               libcurl4-gnutls-dev | libcurl4-nss-dev | libcurl4-openssl-dev,
                libdbus-glib-1-dev,
-               libcurl3-dev | libcurl4-dev,
+               libgtk2.0-dev,
+               libmpd-dev,
                libnotify-dev,
                libsqlite3-dev,
-               libmpd-dev,
+               libtool,
                libxmmsclient-dev,
-               libnotify-dev,
-               libappindicator-dev
-Standards-Version: 3.9.1
-Homepage: http://code.google.com/p/osd-lyrics/
+               python:any
+Standards-Version: 3.9.8
+Homepage: https://github.com/osdlyrics/osdlyrics
+Vcs-Browser: https://github.com/utopia-repository/osdlyrics
+Vcs-Git: https://github.com/utopia-repository/osdlyrics
 
 Package: osdlyrics
 Architecture: any
-Depends: libgtk2.0-0, libcurl3 | libcurl4, libdbus-glib-1-2, ${shlibs:Depends}
-Description: An OSD lyrics show compatible with various media players.
- OSD Lyrics is inspired by lrcdis. It is a third-party lyrics
- display program, and focus on OSD lyrics display.
- OSD Lyrics currently supports following media players:
- * Amarok 1.4 (High CPU usage)
- * Amarok 2.0
- * Audacious
- * Banshee
- * Exaile
- * Rhythmbox
+Depends: libdbus-glib-1-2,
+         libgtk2.0-0,
+         python,
+         python-chardet,
+         python-dbus,
+         python-gobject-2,
+         python-pycurl,
+         ${misc:Depends},
+         ${python:Depends},
+         ${shlibs:Depends}
+Recommends: mpd (>= 0.16~), python-mpd (>= 0.3~)
+Description: OSD lyrics display for various media players
+ OSD Lyrics is a lyrics display program, inspired by lrcdis. It supports
+ communication with music players via mpd, mpris (v1 and v2), and its own
+ HTTP API.
+ .
  OSD Lyrics can download lyrics from following web sites:
- * Sogou
- * Qianqian
-
+ * viewlyrics.com
+ * xiami.com
