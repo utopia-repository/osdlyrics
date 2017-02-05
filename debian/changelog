@@ -1,0 +1,384 @@
+osdlyrics (0.4.3-1~precise1) precise; urgency=low
+
+  * Player support:
+    - Add cmus support, thanks to alepulver
+  * Bug fix:
+    - Dir is not closed in _prepend_subdirs (ol_app_info.c)
+    - Show player chooser if connected player quits in 1 minute 
+
+ -- Tualatrix Chou <tualatrix@gmail.com>  Tue, 05 Jun 2012 14:41:42 +0800
+
+osdlyrics (0.4.2-1~precise1) precise; urgency=low
+
+  * UI improvements: 
+    - Player choose dialog redesigned 
+    - Fade out on the edge of lyric text in OSD mode if it is too long 
+    - Drag-to-seek in scrolling mode 
+
+  * Player support: 
+    - Bring back support for Rhythmbox prior to 0.13 
+    - Support RhythmCat 
+    - Auto-detect the launch command for Audacious 2 and 3 
+    - Do not require root privilege to launch MPD 
+
+  * Bug fixes: 
+    - Blurring in OSD mode will not cause a frame around lyrics 
+    - Fix compilation issue in BDS systems. 
+    - Fix track duration in MPRIS support 
+    - Deal with player launch commands with %f or %U as arguments 
+    - ttPlayer engine can search lyrics with ' in the title 
+    - CUE sheets are supported now 
+    - Don't show invalid search result of Xiami engine 
+
+ -- Tualatrix Chou <tualatrix@gmail.com>  Fri, 17 Feb 2012 10:10:35 +0800
+
+osdlyrics (0.4.1-1~oneiric1) oneiric; urgency=low
+
+  * Choose player if no supported player running on launch
+  * Outline blur on OSD mode
+  * Support all MPRIS-compatible players
+  * New lyrics search site: xiami.com
+  * Fix ttPlayer search
+  * Search lyrics from more than one sites
+  * All files with the name of `osd-lyrics' are replaced to `osdlyrics'
+
+ -- Tualatrix Chou <tualatrix@gmail.com>  Wed, 14 Sep 2011 23:24:13 +0800
+
+osdlyrics (0.4.0-1~natty2) natty; urgency=low
+
+  * Support more players: Clementine, Deciber-audio-player, Gmusicbrowser,
+    Listen, and VLC.
+  * Display OSD lyrics as a normal window.
+  * Display lyrics in traditional scrolling mode.
+  * Add proxy support.
+  * Use ttPlayer instead of other lyric download sites.
+  * Improve performance with MPRIS-compatible players.
+
+ -- Tualatrix Chou <tualatrix@gmail.com>  Sun, 05 Jun 2011 11:26:41 +0800
+
+osdlyrics (0.3.20100604-1~natty1) natty; urgency=low
+
+  [ TualatriX ]
+  * Add Juk and Qmmp support
+  * Add app indicator support for Ubuntu 10.04
+  * Add singleton detection
+  * Honor MPD_HOST and MPD_PORT environment variables for MPD
+  * The `mouse click through' feature is back for GTK+ 2.20 users
+  * The appearance under a window manager without compositing support is
+    corrent now
+  * It won't crash now when you open the lyric assign dialog more than once
+  * The first line of lyric will not be lost when there is a BOM of utf-8 in
+    the files
+  * Fix that the last lyric doesn't get its progress with Rhythmbox.
+
+  [ Tualatrix Chou ]
+  * Rebuild for natty
+
+ -- Tualatrix Chou <tualatrix@gmail.com>  Sat, 07 May 2011 20:38:45 +0800
+
+osdlyrics (0.3.20100330-1~lucid3) lucid; urgency=low
+
+  * Download lyrics from MiniLyrics
+  * Player control on background panel of OSD Window
+  * Encoding detection of LRC files
+    - Display player icon in notification
+    - FIX: Can not hide OSD Window
+    - FIX: Advance/delay offset doesn't work from popup menu
+    - Some minor fixes
+
+ -- TualatriX <tualatrix@gmail.com>  Tue, 30 Mar 2010 14:48:50 +0800
+
+osdlyrics (0.3.20100211~karmic2) karmic; urgency=low
+
+  * Choose which lyric to download if there are more than one candidates
+  * Search lyrics manually
+  * Adjust lyric delay
+  * Support Quod Libet
+  * Display track infomation on tooltip of the trayicon
+  * Show notification of track infomation on track change
+  * Launch prefered player if no supported player is running
+    - A more graceful background on OSD Window
+    - Use themeable icons
+  * FIX: Crashes when hiding OSD Window under some distribution
+
+ -- TualatriX <tualatrix@gmail.com>  Thu, 11 Feb 2010 11:00:49 +0800
+
+osdlyrics (0.2.20100201~karmic1) karmic; urgency=low
+
+  * FIX: The program will not crash when DNS lookup timeout on searching or
+    downloading lyrics
+
+ -- TualatriX <tualatrix@gmail.com>  Mon, 01 Feb 2010 20:21:05 +0800
+
+osdlyrics (0.2.20100109~karmic3) karmic; urgency=low
+
+  * ADD: MOC support
+  * FIX: Downloading fails when title or artist is not set. 
+
+ -- TualatriX <tualatrix@gmail.com>  Mon, 11 Jan 2010 20:01:35 +0800
+
+osdlyrics (0.2-0~20091229~jaunty1) jaunty; urgency=low
+
+  * ADD: MPD support 
+
+ -- TualatriX <tualatrix@gmail.com>  Tue, 29 Dec 2009 19:32:10 +0800
+
+osdlyrics (0.2-0~20091124~karmic1) karmic; urgency=low
+
+  * ADD: Player controll interface
+  * ADD: Lyric file location matching patterns support
+  - ADD: Redownload lyric file via pop-up menu
+  - CHANGE: quit when no player available
+  - FIX: Check status before getting music info or length for exaile 0.3
+  - FIX: Crashes when quitting MPRIS-based players
+  - FIX: Check if the type of file is a regular file
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Tue, 24 Nov 2009 23:44:03 +0800
+
+osdlyrics (0.2-0~20091015~karmic1) karmic; urgency=low
+
+  * ADD: Multi-thread lyric downloading
+  * ADD: Lyric choose UI
+  * ADD: Exaile 0.3 support
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 15 Oct 2009 09:09:15 +0800
+
+osdlyrics (0.2-0~20091015~intrepid1) intrepid; urgency=low
+
+  * ADD: Multi-thread lyric downloading
+  * ADD: Lyric choose UI
+  * ADD: Exaile 0.3 support
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 15 Oct 2009 09:09:15 +0800
+
+osdlyrics (0.2-0~20091015~jaunty1) jaunty; urgency=low
+
+  * ADD: Multi-thread lyric downloading
+  * ADD: Lyric choose UI
+  * ADD: Exaile 0.3 support
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 15 Oct 2009 09:09:15 +0800
+
+osdlyrics (0.2-0~20090924~jaunty1) jaunty; urgency=low
+
+  * ADD: Songbird support with MPRIS plugin
+  - ADD: options for translucent on mouse move
+  - FIX: Fixed a crashing bug caused by free extra string of track number
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 24 Sep 2009 12:07:03 +0800
+
+osdlyrics (0.2-0~20090924~intrepid) intrepid; urgency=low
+
+  * ADD: Songbird support with MPRIS plugin
+  - ADD: options for translucent on mouse move
+  - FIX: Fixed a crashing bug caused by free extra string of track number
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 24 Sep 2009 12:07:03 +0800
+
+osdlyrics (0.2-0~20090923~intrepid1) intrepid; urgency=low
+
+  * CHANGE: Another new icon, this will be the formal icon of OSD Lyrics. Thanks easy <leaeasy@gmail.com>
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Wed, 23 Sep 2009 17:22:38 +0800
+
+osdlyrics (0.2-0~20090923~jaunty1) jaunty; urgency=low
+
+  * CHANGE: Another new icon, this will be the formal icon of OSD Lyrics. Thanks easy <leaeasy@gmail.com>
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Wed, 23 Sep 2009 17:22:38 +0800
+
+osdlyrics (0.2-0~20090914~jaunty1) jaunty; urgency=low
+
+  * ADD: Exaile support
+  * ADD: New icon
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Mon, 14 Sep 2009 12:22:40 +0800
+
+osdlyrics (0.2-0~20090914~intrepid1) intrepid; urgency=low
+
+  * ADD: Exaile support
+  * ADD: New icon
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Mon, 14 Sep 2009 12:22:40 +0800
+
+osdlyrics (0.2-0~20090828~intrepid1) intrepid; urgency=low
+
+  * FIX: The lyric is not set when downloading succeeds
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Fri, 28 Aug 2009 21:35:16 +0800
+
+osdlyrics (0.2-0~20090828~jaunty1) jaunty; urgency=low
+
+  * FIX: The lyric is not set when downloading succeeds
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Fri, 28 Aug 2009 21:35:16 +0800
+
+osdlyrics (0.2-0~20090827~jaunty1) jaunty; urgency=low
+
+  * ADD: Qianqian download engine support
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 27 Aug 2009 23:20:29 +0800
+
+osdlyrics (0.2-0~20090827~intrepid1) intrepid; urgency=low
+
+  * ADD: Qianqian download engine support
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 27 Aug 2009 23:20:29 +0800
+
+osdlyrics (0.1-0~20090822~intrepid1) intrepid; urgency=low
+
+  * FIX: Update lyrics once font family or size is set
+  - CHANGE: Make lyrics transparent when the mouse pointer is actually over lyrics instead of over osd window  * ADD: Basic keybinding support
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Sat, 22 Aug 2009 11:18:24 +0800
+
+osdlyrics (0.1-0~20090816~hardy1) hardy; urgency=low
+
+  * ADD: Show/Hide OSD window with popup menu or global hotkey
+  * ADD: Basic keybinding support
+  * FIX: OSD window crash when setting width before realized
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Sun, 16 Aug 2009 23:15:44 +0800
+
+osdlyrics (0.1-0~20090816~intrepid1) intrepid; urgency=low
+
+  * ADD: Show/Hide OSD window with popup menu or global hotkey
+  * ADD: Basic keybinding support
+  * FIX: OSD window crash when setting width before realized
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Sun, 16 Aug 2009 23:15:44 +0800
+
+osdlyrics (0.1-0~20090816~jaunty1) jaunty; urgency=low
+
+  * ADD: Show/Hide OSD window with popup menu or global hotkey
+  * ADD: Basic keybinding support
+  * FIX: OSD window crash when setting width before realized
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Sun, 16 Aug 2009 23:15:44 +0800
+
+osdlyrics (0.1-0~20090815~intrepid1) intrepid; urgency=low
+
+  * FIX: Save OSD window position when moved
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Sat, 15 Aug 2009 00:14:42 +0800
+
+osdlyrics (0.1-0~20090815~jaunty1) jaunty; urgency=low
+
+  * FIX: Save OSD window position when moved
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Sat, 15 Aug 2009 00:14:42 +0800
+
+osdlyrics (0.1-0~20090814~jaunty1) jaunty; urgency=low
+
+  * Make lyrics semi-transparent when mouse is over
+  - Add Hide menu item and its hotkey
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Fri, 14 Aug 2009 16:53:35 +0800
+
+osdlyrics (0.1-0~20090814~intrepid1) intrepid; urgency=low
+
+  * Make lyrics semi-transparent when mouse is over
+  - Add Hide menu item and its hotkey
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Fri, 14 Aug 2009 16:53:35 +0800
+
+osdlyrics (0.1-0~20090805-1~intrepid1) intrepid; urgency=low
+
+  * Implements [in]active lyric color settings
+  - Fix the bug that download fail when artist or title contains charater `/'
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Wed, 05 Aug 2009 15:16:23 +0800
+
+osdlyrics (0.1-0~20090805-1~jaunty1) jaunty; urgency=low
+
+  * Implements [in]active lyric color settings
+  - Fix the bug that download fail when artist or title contains charater `/'
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Wed, 05 Aug 2009 15:16:23 +0800
+
+osdlyrics (0.1-0~20090804-1~jaunty1) jaunty; urgency=low
+
+  - Close button is now available
+  * Preview in preference
+  * Translations for French, Spanish, and Russia
+  - Some bug fix
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Tue, 04 Aug 2009 14:18:37 +0800
+
+osdlyrics (0.1-0~20090804-1~intrepid1) intrepid; urgency=low
+
+  - Close button is now available
+  * Preview in preference
+  * Translations for French, Spanish, and Russia
+  - Some bug fix
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Tue, 04 Aug 2009 14:18:37 +0800
+
+osdlyrics (0.1-0~20090730~jaunty1) jaunty; urgency=low
+
+  * Source refactory, nothing changed
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 30 Jul 2009 11:44:46 +0800
+
+osdlyrics (0.1-0~20090730~intrepid1) intrepid; urgency=low
+
+  * Source refactory, nothing changed
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 30 Jul 2009 11:44:46 +0800
+
+osdlyrics (0.1-0~ppa3~intrepid1) intrepid; urgency=low
+
+  * Fix the problem when display lyrics which is longer than width
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Mon, 27 Jul 2009 16:17:41 +0800
+
+osdlyrics (0.1-0~ppa3~jaunty1) jaunty; urgency=low
+
+  * Fix the problem when display lyrics which is longer than width
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Mon, 27 Jul 2009 16:17:41 +0800
+
+osdlyrics (0.1-0~ppa2~jaunty1) jaunty; urgency=low
+
+  * Adds support for Rhythmbox
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Sun, 26 Jul 2009 11:25:44 +0800
+
+osdlyrics (0.1-0~ppa2~intrepid1) intrepid; urgency=low
+
+  * Adds support for Rhythmbox
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Sun, 26 Jul 2009 11:25:44 +0800
+
+osdlyrics (0.1-0~ppa2~hardy1) hardy; urgency=low
+
+  * Uses lower debhelper version in build dependency so that hardy can compile it
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 23 Jul 2009 13:17:33 +0800
+
+osdlyrics (0.1-0~ppa1~intrepid1) intrepid; urgency=low
+
+  * Implement the lrc fetch interface so that it won't crash when downloading
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 23 Jul 2009 13:17:33 +0800
+
+osdlyrics (0.1-0~ppa1~hardy1) hardy; urgency=low
+
+  * Implement the lrc fetch interface so that it won't crash when downloading
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Thu, 23 Jul 2009 13:17:33 +0800
+
+
+osdlyrics (0.1-0~ppa0) jaunty; urgency=low
+
+  * Uses real automake missing files instead of symbol link
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Mon, 13 Jul 2009 23:19:24 +0800
+
+osdlyrics (0.1-1ubuntu1) jaunty; urgency=low
+
+  * Uses real install-sh instead of symbol link
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Mon, 13 Jul 2009 23:19:24 +0800
+
+osdlyrics (0.1-0ubuntu1) jaunty; urgency=low
+
+  * Initial release
+
+ -- Tiger Soldier (OSD Lyrics) <tigersoldi@gmail.com>  Mon, 13 Jul 2009 23:19:24 +0800
