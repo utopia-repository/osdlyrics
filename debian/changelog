@@ -1,3 +1,10 @@
+osdlyrics (0.5~git20170115~dfc4391-0utopia2) experimental; urgency=medium
+
+  * Utopia Repository build.
+  * Drop + patch out unused build-deps (libcurl, sqlite3, mpd, xmms2)
+
+ -- James Lu <bitflip3@gmail.com>  Mon, 06 Feb 2017 16:44:09 -0800
+
 osdlyrics (0.5~git20170115~dfc4391-0utopia1) experimental; urgency=low
 
   * Utopia Repository build, based off the old PPA sources at
