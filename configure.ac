@@ -110,28 +110,9 @@ PKG_CHECK_MODULES([GTK2], [gtk+-2.0 >= 2.20.0,
                           gio-unix-2.0])
 PKG_CHECK_MODULES([X11], [x11])   dnl For XGrabKey
 PKG_CHECK_MODULES([DBUS_GLIB], [dbus-glib-1])
-PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([NOTIFY], [libnotify])
 PKG_CHECK_EXISTS([libnotify >= 0.7],
   AC_DEFINE(HAVE_LIBNOTIFY_0_7, 1, [Have libnotify >= 0.7]))
-
-PKG_CHECK_MODULES([SQLITE], [sqlite3 >= 3.3.0])
-
-dnl MPD support
-AC_ARG_ENABLE([mpd],
-  [AS_HELP_STRING([--disable-mpd], [Disables MPD support. You won't need libmpd if you use this option])],
-  [],
-  [enable_mpd=yes])
-AM_CONDITIONAL(BUILD_MPD_SUPPORT, test "x$enable_mpd" = xyes)
-
-dnl XMMS2 support
-AC_ARG_ENABLE([xmms2],
-  [AS_HELP_STRING([--disable-xmms2], [Disables XMMS2 support. You won't need libxmmsclient if you use this option])],
-  [],
-  [enable_xmms2=yes])
-XMMS2_CFLAGS=
-XMMS2_LIBS=
-AM_CONDITIONAL(BUILD_XMMS2_SUPPORT, [test "x$enable_xmms2" = xyes])
 
 dnl AppIndicator support for Ubuntu
 if test x$enable_appindicator = xauto ; then
@@ -192,16 +173,6 @@ AC_OUTPUT
 AC_MSG_NOTICE([OSD Lyrics compilation options:])
         AC_MSG_NOTICE([ *        Version: $PACKAGE_VERSION])
         AC_MSG_NOTICE([ *         Prefix: $prefix])
-if test "x$enable_mpd" = "xyes"; then
-        AC_MSG_NOTICE([ *    MPD support: yes])
-else
-        AC_MSG_NOTICE([ *    MPD support: no])
-fi
-if test "x$enable_xmms2" = "xyes"; then
-        AC_MSG_NOTICE([ *  XMMS2 support: yes])
-else
-        AC_MSG_NOTICE([ *  XMMS2 support: no])
-fi
 if test "x$enable_appindicator" = "xyes"; then
         AC_MSG_NOTICE([ *   AppIndicator: yes])
 else

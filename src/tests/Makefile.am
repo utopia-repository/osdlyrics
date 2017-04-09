@@ -19,7 +19,6 @@ AM_CPPFLAGS = \
 	-DGUIDIR='"$(OL_GUIDIR)"' \
 	@GTK2_CFLAGS@ \
 	@DBUS_GLIB_CFLAGS@ \
-	@SQLITE_CFLAGS@ \
 	-I$(top_srcdir)/src \
 	-I$(top_srcdir)/src/tests \
 	$(NULL)
@@ -31,8 +30,6 @@ AM_CFLAGS = \
 LDADD = \
 	@GTK2_LIBS@ \
 	@DBUS_GLIB_LIBS@ \
-	@CURL_LIBS@ \
-	@SQLITE_LIBS@ \
 	-lm \
 	$(NULL)
 
