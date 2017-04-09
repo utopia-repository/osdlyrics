@@ -45,7 +45,6 @@ static const OlColor DEFAULT_ACTIVE_COLORS[OL_LINEAR_COLOR_COUNT]= {
 };
 static const int MOUSE_TIMER_INTERVAL = 100;
 
-static const int DEFAULT_LINE_HEIGHT = 45;
 static const int DEFAULT_HEIGHT = 100;
 static const double LINE_PADDING = 0.0;
 static const int BORDER_WIDTH = 5;

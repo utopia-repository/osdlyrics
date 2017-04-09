@@ -263,7 +263,6 @@ test_empty_source (void)
 int
 main (int argc, char **argv)
 {
-  g_type_init ();
   source = ol_lyric_source_new ();
   test_list_sources ();
   test_search ();

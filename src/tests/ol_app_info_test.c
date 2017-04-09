@@ -189,7 +189,6 @@ second_exe_test (void)
 int
 main (int argc, char **argv)
 {
-  g_type_init ();
   init ();
   basic_test ();
   desktop_test ();
