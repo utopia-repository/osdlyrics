@@ -83,7 +83,6 @@ test_traverse (void)
 int
 main (int argc, char **argv)
 {
-  g_type_init ();
   ol_log_set_file ("-");
   test_hashtable ();
   test_traverse ();
