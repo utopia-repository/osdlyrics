@@ -1,3 +1,11 @@
+osdlyrics (0.5~git20170410~34f233a-0utopia1) unstable; urgency=low
+
+  * Utopia Repository build.
+  * New upstream Git snapshot.
+  * Drop patches as they have been merged upstream.
+
+ -- James Lu <bitflip3@gmail.com>  Wed, 03 May 2017 18:16:08 -0700
+
 osdlyrics (0.5~git20170115~dfc4391-0utopia2) experimental; urgency=medium
 
   * Utopia Repository build.
