@@ -38,7 +38,6 @@ test_prop ()
 int
 main ()
 {
-  g_type_init ();
   test_list_name ();
   test_prop ();
   return 0;

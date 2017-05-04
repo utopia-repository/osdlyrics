@@ -2,7 +2,5 @@ SUBDIRS = \
         mpris1 \
         mpris2 \
         http \
+        mpd \
         $(NULL)
-if BUILD_MPD_SUPPORT
-        SUBDIRS += mpd
-endif
