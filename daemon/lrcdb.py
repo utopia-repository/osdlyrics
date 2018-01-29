@@ -70,7 +70,7 @@ def query_param_from_metadata(metadata):
     return param
 
 class LrcDb(object):
-    """ Database to store location of LRC files
+    """ Database to store location of LRC files that have been manually assigned
     """
     
     TABLE_NAME = 'lyrics'
@@ -97,6 +97,8 @@ UPDATE {0}
   SET lrcpath=?
   WHERE uri=?
 """.format(TABLE_NAME)
+
+    DELETE_LYRIC = 'DELETE FROM {0} WHERE '.format(TABLE_NAME)
     
     FIND_LYRIC = 'SELECT lrcpath FROM {0} WHERE '.format(TABLE_NAME)
 
@@ -149,6 +151,22 @@ UPDATE {0}
                 tracknum = 0
             logging.debug('Assign lyrics file %s to track %s. %s - %s in album %s @ %s' % (uri, tracknum, artist, title, album, location))
             c.execute(LrcDb.ASSIGN_LYRIC, (title, artist, album, tracknum, location, uri))
+        self._conn.commit()
+        c.close()
+
+    def delete(self, metadata):
+        """ Deletes lyrics association(s) for given metadata
+
+        Deletes all lyrics associations that would be found by find(self, metadata)
+        """
+        c = self._conn.cursor()
+
+        if metadata.location:
+            location = normalize_location(metadata.location)
+            c.execute(LrcDb.DELETE_LYRIC + LrcDb.QUERY_LOCATION, (location,))
+
+        c.execute(LrcDb.DELETE_LYRIC + LrcDb.QUERY_INFO, query_param_from_metadata(metadata))
+
         self._conn.commit()
         c.close()
 
@@ -236,6 +254,10 @@ def test():
     u'\u8def\u5f841'
     >>> db.find(Metadata.from_dict({'title': 'Tiger', 'artist': 'Soldiers', }))
     >>> db.find(Metadata())
+    >>> db.delete(Metadata.from_dict({'location': '/tmp/asdf'}))
+    >>> db.find(Metadata.from_dict({'title': 'Tiger',
+    ...                             'artist': 'Soldier',
+    ...                             'location': '/tmp/asdf'}))
     """
     import doctest
     doctest.testmod()
