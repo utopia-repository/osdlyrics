@@ -213,7 +213,6 @@ _paint_rect (cairo_t *cr, GdkPixbuf *source,
 static gboolean
 ol_osd_window_paint_bg (OlOsdWindow *osd, cairo_t *cr)
 {
-  ol_log_func ();
   ol_assert_ret (OL_IS_OSD_WINDOW (osd), FALSE);
   GtkWidget *widget = GTK_WIDGET (osd);
   OlOsdWindowPrivate *priv = OL_OSD_WINDOW_GET_PRIVATE (osd);

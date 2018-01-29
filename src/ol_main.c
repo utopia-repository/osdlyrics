@@ -499,7 +499,6 @@ _player_connected_cb (void)
 static gint
 _update_position (gpointer data)
 {
-  ol_log_func ();
   guint64 time = 0;
   ol_player_get_position (player, &time);
   CALL_DISPLAY_MODULES (ol_display_module_set_played_time, time);
