@@ -70,40 +70,41 @@ def query_param_from_metadata(metadata):
     return param
 
 class LrcDb(object):
-    """ Database to store location of LRC files
+    """ Database to store location of LRC files that have been manually assigned
     """
     
     TABLE_NAME = 'lyrics'
 
+    METADATA_LIST = [METADATA_TITLE, METADATA_ARTIST, METADATA_ALBUM, METADATA_TRACKNUM]
+
     CREATE_TABLE = """
-CREATE TABLE IF NOT EXISTS %s (
+CREATE TABLE IF NOT EXISTS {0} (
   id INTEGER PRIMARY KEY AUTOINCREMENT, 
-  title TEXT, artist TEXT, album TEXT, tracknum INTEGER,
+  {1} TEXT, {2} TEXT, {3} TEXT, {4} INTEGER,
   uri TEXT UNIQUE ON CONFLICT REPLACE,
   lrcpath TEXT
 )
-""" % TABLE_NAME
+""".format(TABLE_NAME, *METADATA_LIST)
 
     ASSIGN_LYRIC = """
-INSERT OR REPLACE INTO %s 
-  (title, artist, album, tracknum, uri, lrcpath)
+INSERT OR REPLACE INTO {0}
+  ({1}, {2}, {3}, {4}, uri, lrcpath)
   VALUES (?, ?, ?, ?, ?, ?)
-""" % TABLE_NAME
+""" .format(TABLE_NAME, *METADATA_LIST)
 
     UPDATE_LYRIC = """
-UPDATE %s
+UPDATE {0}
   SET lrcpath=?
   WHERE uri=?
-""" % TABLE_NAME
+""".format(TABLE_NAME)
+
+    DELETE_LYRIC = 'DELETE FROM {0} WHERE '.format(TABLE_NAME)
     
-    FIND_LYRIC = 'SELECT lrcpath FROM %s WHERE ' % TABLE_NAME;
+    FIND_LYRIC = 'SELECT lrcpath FROM {0} WHERE '.format(TABLE_NAME)
 
     QUERY_LOCATION = 'uri = ?'
 
-    QUERY_INFO = {METADATA_TITLE: 'title',
-                  METADATA_ARTIST: 'artist',
-                  METADATA_ALBUM: 'album',
-                  METADATA_TRACKNUM: 'tracknum'}
+    QUERY_INFO = ' AND '.join('{0}=:{0}'.format(m) for m in METADATA_LIST)
 
     def __init__(self, dbfile=None):
         """
@@ -153,13 +154,29 @@ UPDATE %s
         self._conn.commit()
         c.close()
 
+    def delete(self, metadata):
+        """ Deletes lyrics association(s) for given metadata
+
+        Deletes all lyrics associations that would be found by find(self, metadata)
+        """
+        c = self._conn.cursor()
+
+        if metadata.location:
+            location = normalize_location(metadata.location)
+            c.execute(LrcDb.DELETE_LYRIC + LrcDb.QUERY_LOCATION, (location,))
+
+        c.execute(LrcDb.DELETE_LYRIC + LrcDb.QUERY_INFO, query_param_from_metadata(metadata))
+
+        self._conn.commit()
+        c.close()
+
     def find(self, metadata):
         """ Finds the location of LRC files for given metadata
 
         To find the location of lyrics, firstly find whether there is a record matched
         with the ``location`` attribute in metadata. If not found or ``location`` is
         not specified, try to find with respect to ``title``, ``artist``, ``album``
-        and ``tracknumber``
+        and ``tracknum``
         
         If found, return the uri of the LRC file. Otherwise return None. Note that
         this method may return an empty string, so use ``is None`` to figure out
@@ -191,13 +208,8 @@ UPDATE %s
         return self._find_by_condition(LrcDb.QUERY_LOCATION, (location,))
 
     def _find_by_info(self, metadata):
-        query = []
-        for mkey, qkey in LrcDb.QUERY_INFO.items():
-            query.append('%s=:%s' % (qkey, mkey))
-        if len(query) > 0:
-            return self._find_by_condition(' AND '.join(query),
-                                           query_param_from_metadata(metadata))
-        return None
+        return self._find_by_condition(LrcDb.QUERY_INFO,
+                                       query_param_from_metadata(metadata))
 
 def test():
     """
@@ -242,6 +254,10 @@ def test():
     u'\u8def\u5f841'
     >>> db.find(Metadata.from_dict({'title': 'Tiger', 'artist': 'Soldiers', }))
     >>> db.find(Metadata())
+    >>> db.delete(Metadata.from_dict({'location': '/tmp/asdf'}))
+    >>> db.find(Metadata.from_dict({'title': 'Tiger',
+    ...                             'artist': 'Soldier',
+    ...                             'location': '/tmp/asdf'}))
     """
     import doctest
     doctest.testmod()
