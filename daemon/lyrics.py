@@ -258,6 +258,7 @@ def save_to_uri(uri, content, create=True):
     """
     URI_SAVE_HANDLERS = {
         'file': save_to_file,
+        'none': lambda urlparts, content, create: True,
         }
 
     url_parts = urlparse.urlparse(osdlyrics.utils.ensure_utf8(uri))
@@ -287,10 +288,6 @@ def update_lrc_offset(content, offset):
                        content[search_result.end(2):])
 
 class LyricsService(dbus.service.Object):
-
-    scheme_handlers = {
-        'file': '_lrc_from_file',
-        }
 
     def __init__(self, conn):
         dbus.service.Object.__init__(self,
@@ -343,7 +340,7 @@ class LyricsService(dbus.service.Object):
         if uri:
             lrc = load_from_uri(uri)
             if lrc is not None:
-                logging.info("LRC for track %s not found in db but fount by pattern: %s" % (metadata_description(metadata), uri))
+                logging.info("LRC for track %s not found in db but found by pattern: %s" % (metadata_description(metadata), uri))
         if lrc is None:
             logging.info("LRC for track %s not found" %
                          metadata_description(metadata))
@@ -372,11 +369,10 @@ class LyricsService(dbus.service.Object):
     def SetLyricContent(self, metadata, content):
         if isinstance(metadata, dict):
             metadata = Metadata.from_dict(metadata)
-        uri = self.find_lrc_from_db(self._metadata)
-        if uri is None or not save_to_uri(uri, content, False):
-            uri = ''
-        if uri == '':
-            uri = self._save_to_patterns(metadata, content)
+        # Remove any existing file association and save the new lyrics content
+        # to the configured patterns.
+        self._db.delete(metadata)
+        uri = self._save_to_patterns(metadata, content)
         if uri and metadata_equal(metadata, self._metadata):
             self.CurrentLyricsChanged()
         return uri

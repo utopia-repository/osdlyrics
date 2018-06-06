@@ -28,3 +28,4 @@ config.status
 cscope.out
 *.pyc
 *~
+*.service

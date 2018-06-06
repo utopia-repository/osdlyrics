@@ -647,10 +647,6 @@ msgstr "_Uživatel:"
 msgid "bottom"
 msgstr "spodek"
 
-#: ../data/dialogs.glade.h:4
-msgid "http://code.google.com/p/osd-lyrics/"
-msgstr ""
-
 #: ../data/dialogs.glade.h:41
 msgid "middle"
 msgstr "prostředek"

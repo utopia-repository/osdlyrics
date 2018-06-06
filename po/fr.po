@@ -652,10 +652,6 @@ msgstr ""
 msgid "bottom"
 msgstr "bas"
 
-#: ../data/dialogs.glade.h:119
-msgid "http://code.google.com/p/osd-lyrics/"
-msgstr "http://code.google.com/p/osd-lyrics/"
-
 #: ../data/dialogs.glade.h:120
 msgid "middle"
 msgstr "milieu"
