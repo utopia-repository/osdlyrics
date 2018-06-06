@@ -2,8 +2,7 @@ Source: osdlyrics
 Section: x11
 Priority: optional
 Maintainer: James Lu <james@overdrivenetworks.com>
-Build-Depends: autotools-dev,
-               debhelper (>= 10),
+Build-Depends: debhelper (>= 10),
                intltool,
                libappindicator-dev,
                libdbus-glib-1-dev,
