@@ -1,3 +1,13 @@
+osdlyrics (0.5~git20180512~ac9bbc36-0utopia1) UNRELEASED; urgency=medium
+
+  * New upstream snapshot.
+  * Update my email.
+  * Bump Standards-Version to 4.1.4
+    - Remove get-orig-source target from d/rules, replacing it with a
+      debian/maketarball.sh
+
+ -- James Lu <james@overdrivenetworks.com>  Wed, 06 Jun 2018 02:22:22 -0700
+
 osdlyrics (0.5~git20170410~34f233a-0utopia1) unstable; urgency=low
 
   * Utopia Repository build.

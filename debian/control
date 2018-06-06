@@ -1,7 +1,7 @@
 Source: osdlyrics
 Section: x11
 Priority: optional
-Maintainer: James Lu <bitflip3@gmail.com>
+Maintainer: James Lu <james@overdrivenetworks.com>
 Build-Depends: autotools-dev,
                debhelper (>= 10),
                intltool,
@@ -11,7 +11,7 @@ Build-Depends: autotools-dev,
                libnotify-dev,
                libtool,
                python:any
-Standards-Version: 3.9.8
+Standards-Version: 4.1.4
 Homepage: https://github.com/osdlyrics/osdlyrics
 Vcs-Browser: https://github.com/utopia-repository/osdlyrics
 Vcs-Git: https://github.com/utopia-repository/osdlyrics
