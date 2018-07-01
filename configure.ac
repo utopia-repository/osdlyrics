@@ -15,6 +15,7 @@ m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 AC_CONFIG_SRCDIR([src/ol_main.c])
 AC_CONFIG_HEADERS([config.h])
 AC_DEFINE([PROGRAM_NAME], ["OSD Lyrics"], [The full name of the program to display])
+AC_SUBST([PROGRAM_NAME], ["OSD Lyrics"])
 
 # Checks for header files.
 AC_PATH_X
