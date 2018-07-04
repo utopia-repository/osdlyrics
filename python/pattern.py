@@ -19,10 +19,10 @@
 #
 
 import os.path
-import urllib
 import urlparse
 
 from .errors import PatternException
+from .utils import url2path
 
 def expand_file(pattern, metadata):
     """
@@ -94,7 +94,7 @@ def expand_file(pattern, metadata):
                     if uri.scheme == '':
                         path = uri.path
                     else:
-                        path = urllib.url2pathname(uri.path)
+                        path = url2path(uri)
                     basename = os.path.basename(path)
                     root, ext = os.path.splitext(basename)
                     has_tag = True
@@ -152,7 +152,7 @@ def expand_path(pattern, metadata):
         uri = urlparse.urlparse(location)
         if not uri.scheme in ['file']:
             raise PatternException('Unsupported file scheme %s' % uri.scheme)
-        path = urllib.url2pathname(uri.path)
+        path = url2path(uri)
         return os.path.dirname(path)
     return os.path.expanduser(pattern)
 

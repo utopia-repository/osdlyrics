@@ -22,7 +22,6 @@ import logging
 import os
 import os.path
 import re
-import urllib
 import urlparse
 import sys
 
@@ -37,6 +36,7 @@ from osdlyrics.consts import METADATA_ALBUM, METADATA_ARTIST, METADATA_TITLE
 import osdlyrics.lrc
 from osdlyrics.metadata import Metadata
 from osdlyrics.pattern import expand_file, expand_path
+from osdlyrics.utils import url2path
 
 import lrcdb
 
@@ -191,7 +191,7 @@ def load_from_file(urlparts):
     Return the content of the file, or None if error raised.
     """
     if urlparts.scheme == 'file':
-        path = urllib.url2pathname(urlparts.path)
+        path = url2path(urlparts)
     else:
         path = urlparts.path
     try:
@@ -227,7 +227,7 @@ def save_to_file(urlparts, content, create):
     Return True if succeeded
     """
     if urlparts.scheme == 'file':
-        path = urllib.url2pathname(urlparts.path)
+        path = url2path(urlparts)
     else:
         path = urlparts.path
     if not create:
