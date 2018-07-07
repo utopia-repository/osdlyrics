@@ -166,6 +166,7 @@ AC_CONFIG_FILES([
         lyricsources/xiami/Makefile
         lyricsources/lrc123/Makefile
 	lyricsources/viewlyrics/Makefile
+        lyricsources/netease/Makefile
         tools/Makefile
 ])
 
