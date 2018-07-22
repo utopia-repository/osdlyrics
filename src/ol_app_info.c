@@ -460,7 +460,7 @@ _find_binfile (const gchar *binfile, gboolean match_prefix)
     gchar **pathiter;
     for (pathiter = pathv; *pathiter != NULL; pathiter++)
     {
-      if (*pathiter != '\0')
+      if (**pathiter != '\0')
         path_list = g_list_prepend (path_list, g_strdup (*pathiter));
     }
     path_list = g_list_reverse (path_list);
