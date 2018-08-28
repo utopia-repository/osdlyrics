@@ -1,8 +1,8 @@
-osdlyrics (0.5~git20180512~ac9bbc36-0utopia1) UNRELEASED; urgency=medium
+osdlyrics (0.5~git20180723~18cc4a87-0utopia1) UNRELEASED; urgency=medium
 
   * New upstream snapshot.
   * Update my email.
-  * Bump Standards-Version to 4.1.4
+  * Bump Standards-Version to 4.2.1
     - Remove get-orig-source target from d/rules, replacing it with a
       debian/maketarball.sh
   * Drop extraneous B-D: autotools-dev
