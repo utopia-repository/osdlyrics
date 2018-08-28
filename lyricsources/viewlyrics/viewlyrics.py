@@ -108,7 +108,7 @@ class ViewlyricsSource(BaseLyricSourcePlugin):
         codekey = contentbytes[1]
         deccontent = ''
         for char in contentbytes[22:]:
-                deccontent += unichr(char ^ codekey)
+                deccontent += chr(char ^ codekey)
         
         result = []
         pagesleft = 0

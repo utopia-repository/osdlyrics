@@ -1,1 +1,1 @@
-SUBDIRS = xiami lrc123 viewlyrics
+SUBDIRS = xiami lrc123 viewlyrics netease
